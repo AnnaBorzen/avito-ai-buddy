@@ -27,7 +27,32 @@ go.work.sum
 
 # env file
 .env
+.env.*
+!.env.example
 
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Docker
+*.pid
+
+# Build artifacts
+backend/server
+
+# Python
+__pycache__/
+*.py[cod]
+
+# OS
+.DS_Store
+*.log
+
+# Прогоны evals (результаты не коммитятся)
+evals/runs/*
+!evals/runs/.gitkeep
+

@@ -1,0 +1,11 @@
+.git
+.gitignore
+Dockerfile
+.dockerignore
+
+# Артефакты сборки и тестов
+bin/
+server
+*.out
+coverage.*
+*.test

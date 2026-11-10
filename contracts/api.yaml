@@ -1,0 +1,80 @@
+openapi: 3.1.0
+info:
+  title: Avito AI Buddy API
+  version: 0.1.0
+  description: |
+    Контракт API AI-бадди. На текущем этапе реализованы только служебные
+    эндпоинты живости и готовности; бизнес-эндпоинты появятся после
+    согласования specs/access-request.md.
+servers:
+  - url: http://localhost:8080
+    description: Локальный backend
+tags:
+  - name: system
+    description: Служебные проверки
+paths:
+  /healthz:
+    get:
+      tags: [system]
+      operationId: getLiveness
+      summary: Liveness-проверка
+      description: Возвращает 200, если процесс backend запущен.
+      responses:
+        "200":
+          description: Сервис запущен
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+  /readyz:
+    get:
+      tags: [system]
+      operationId: getReadiness
+      summary: Готовность сервиса и зависимостей
+      description: Проверяет TCP-доступность PostgreSQL и Redis.
+      responses:
+        "200":
+          description: Все настроенные зависимости доступны
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Readiness"
+        "503":
+          description: Хотя бы одна зависимость недоступна
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Readiness"
+components:
+  schemas:
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          const: ok
+    DependencyStatus:
+      type: string
+      enum: [ok, error, skipped]
+    DependencyCheck:
+      type: object
+      required: [status]
+      properties:
+        status:
+          $ref: "#/components/schemas/DependencyStatus"
+        error:
+          type: string
+          description: Текст ошибки, если проверка не прошла
+    Readiness:
+      type: object
+      required: [status, checks]
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded]
+        checks:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/DependencyCheck"
+          description: Результаты проверки по имени зависимости
