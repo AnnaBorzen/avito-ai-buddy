@@ -53,8 +53,10 @@ clean:
 	$(COMPOSE) down -v --remove-orphans
 
 # --- Backend ---
+ENV_FILE ?= .env
+
 backend:
-	cd backend && go run ./cmd/api
+	@if [ -f "$(ENV_FILE)" ]; then set -a && . "$(abspath $(ENV_FILE))" && set +a; fi; cd backend && go run ./cmd/api
 
 test:
 	cd backend && go test ./... -coverprofile=coverage.out

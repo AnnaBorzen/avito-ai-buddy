@@ -1,18 +1,23 @@
-package main
+package app
 
 import (
+	"context"
+	"io"
+	"log/slog"
 	"net"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/AnnaBorzen/avito-ai-buddy/backend/internal/config"
 )
 
 func TestLivenessHandler(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	request := httptest.NewRequest(http.MethodGet, "/healthz", nil)
 
-	livenessHandler().ServeHTTP(recorder, request)
+	livenessHandler(testLogger()).ServeHTTP(recorder, request)
 
 	if recorder.Code != http.StatusOK {
 		t.Fatalf("unexpected status code: got %d, want %d", recorder.Code, http.StatusOK)
@@ -55,7 +60,7 @@ func TestReadinessHandler(t *testing.T) {
 			recorder := httptest.NewRecorder()
 			request := httptest.NewRequest(http.MethodGet, "/readyz", nil)
 
-			readinessHandler(test.deps).ServeHTTP(recorder, request)
+			readinessHandler(testLogger(), test.deps).ServeHTTP(recorder, request)
 
 			if recorder.Code != test.wantStatus {
 				t.Fatalf("unexpected status code: got %d, want %d", recorder.Code, test.wantStatus)
@@ -68,25 +73,19 @@ func TestReadinessHandler(t *testing.T) {
 	}
 }
 
-func TestPostgresAddr(t *testing.T) {
-	tests := []struct {
-		name   string
-		rawURL string
-		want   string
-	}{
-		{name: "empty", rawURL: "", want: ""},
-		{name: "with port", rawURL: "postgres://buddy:buddy@db:5433/buddy?sslmode=disable", want: "db:5433"},
-		{name: "without port", rawURL: "postgres://buddy:buddy@db/buddy", want: "db:5432"},
-		{name: "invalid url", rawURL: "://bad", want: ""},
-	}
+func TestRunStopsOnContextCancel(t *testing.T) {
+	cfg := config.Config{App: config.AppConfig{Env: config.EnvDev}}
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			if got := postgresAddr(test.rawURL); got != test.want {
-				t.Fatalf("unexpected addr: got %q, want %q", got, test.want)
-			}
-		})
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	if err := New(cfg, testLogger()).Run(ctx); err != nil {
+		t.Fatalf("Run() error: %v", err)
 	}
+}
+
+func testLogger() *slog.Logger {
+	return slog.New(slog.NewTextHandler(io.Discard, nil))
 }
 
 func startTCPServer(t *testing.T) string {

@@ -8,7 +8,7 @@ AI-бадди для сотрудников: помогает оформить �
 
 | Слой | Технологии |
 |---|---|
-| Backend | Go 1.26, стандартная библиотека (`net/http`, `log/slog`) |
+| Backend | Go 1.26, `net/http`, `log/slog`, `koanf` (env-конфиг) |
 | Frontend | React 19, TypeScript, Vite, TanStack Query, Zustand, Zod |
 | Данные | PostgreSQL 17, Redis 7.4 |
 | Инфраструктура | Docker, Docker Compose, GitHub Actions |
@@ -57,6 +57,47 @@ make backend                     # http://localhost:8080
 make frontend-install            # npm ci
 make frontend                    # http://localhost:5173, проксирует /healthz, /readyz, /api на :8080
 ```
+
+`make backend` подхватывает переменные из `.env` в корне репозитория (если файл есть).
+Раскомментируйте в нём `DATABASE_URL` и `REDIS_ADDR`, чтобы `/readyz` проверял
+локальные PostgreSQL и Redis, а не пропускал проверки.
+
+## Переменные окружения
+
+Backend читает настройки из env (шаблон — [`.env.example`](.env.example)).
+Пустое значение означает «не задано» и не затирает дефолт.
+Переменные с префиксом сервиса, которых нет в таблице (например, опечатка
+`LLM_MODLE`), игнорируются, но при старте выводятся в предупреждении
+`unknown environment variables ignored`; переменные compose (`REDIS_PORT`,
+`POSTGRES_*`, `BACKEND_PORT` и т.п.) в него не попадают.
+
+| Переменная | Назначение | По умолчанию |
+|---|---|---|
+| `APP_ENV` | `dev` (текстовые логи) или `prod` (JSON-логи) | `dev` |
+| `PORT` | порт HTTP-сервера | `8080` |
+| `DATABASE_URL` | DSN PostgreSQL; пусто — проверка в `/readyz` пропускается | — |
+| `REDIS_ADDR` | `host:port` Redis; пусто — проверка в `/readyz` пропускается | — |
+| `LOG_LEVEL` | `debug`, `info`, `warn`, `error` | `info` |
+| `LOG_FORMAT` | `json` или `text`; пусто — выводится из `APP_ENV` | из `APP_ENV` |
+| `LOG_ADD_SOURCE` | `true` добавляет файл и строку вызова в записи | `false` |
+| `LLM_ENABLED` | включает интеграцию с LLM | `false` |
+| `LLM_BASE_URL` | базовый URL LLM API (обязателен при `LLM_ENABLED=true`) | — |
+| `LLM_API_KEY` | ключ LLM API (в логи не попадает) | — |
+| `LLM_MODEL` | модель LLM (обязательна при `LLM_ENABLED=true`) | — |
+| `LLM_TIMEOUT` | таймаут запросов к LLM | `30s` |
+| `MCP_ENABLED` | включает интеграцию с MCP | `false` |
+| `MCP_URL` | URL MCP-сервера (обязателен при `MCP_ENABLED=true`) | — |
+| `MCP_TIMEOUT` | таймаут запросов к MCP | `10s` |
+
+Невалидный конфиг останавливает запуск и выводит список всех найденных проблем.
+Пароль в `DATABASE_URL` и `LLM_API_KEY`, а также пароль/токен в URL
+(`LLM_BASE_URL`, `MCP_URL`) маскируются в стартовом логе.
+
+Каждый HTTP-запрос пишется одной записью (`method`, `path`, `status`, `bytes`,
+`duration_ms`), уровень выбирается по статусу: `5xx` → `error`, `4xx` → `warn`,
+иначе `info`. Паника в хендлере перехватывается: клиент получает `500` с JSON-ошибкой
+`INTERNAL_ERROR`, в лог попадает стек. Стандартный `log` и `http.Server.ErrorLog`
+перенаправлены в slog, поэтому формат логов остаётся единым.
 
 ## Эндпоинты
 
