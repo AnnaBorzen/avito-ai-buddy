@@ -1,7 +1,7 @@
 .PHONY: help up down build restart logs ps clean
 .PHONY: backend frontend test coverage lint fmt check
 .PHONY: frontend-install frontend-build
-.PHONY: db-up db-down db-logs
+.PHONY: db-up db-down db-logs db-migrate-up db-migrate-down db-migrate-version
 
 .DEFAULT_GOAL := help
 
@@ -29,6 +29,9 @@ help:
 	@echo "  make db-up            - Start PostgreSQL"
 	@echo "  make db-down          - Stop PostgreSQL"
 	@echo "  make db-logs          - Show PostgreSQL logs"
+	@echo "  make db-migrate-up    - Apply all database migrations"
+	@echo "  make db-migrate-down  - Roll back one database migration"
+	@echo "  make db-migrate-version - Show current database migration version"
 
 # --- Docker ---
 up:
@@ -92,3 +95,22 @@ db-down:
 
 db-logs:
 	$(COMPOSE) logs -f postgres
+
+# --- Migrations ---
+# The DSN uses the compose service name "postgres"; migrate runs in the compose
+# network. .env is sourced when present, matching the backend target. Shell
+# expansion happens at recipe time, so .env remains the single source of DB
+# settings and the defaults below mirror the compose file.
+MIGRATE_DSN = postgres://$${POSTGRES_USER:-buddy}:$${POSTGRES_PASSWORD:-buddy}@postgres:5432/$${POSTGRES_DB:-buddy}?sslmode=disable
+
+db-migrate-up:
+	@if [ -f "$(ENV_FILE)" ]; then set -a && . "$(abspath $(ENV_FILE))" && set +a; fi; \
+	$(COMPOSE) run --rm migrate -path=/migrations -database "$(MIGRATE_DSN)" up
+
+db-migrate-down:
+	@if [ -f "$(ENV_FILE)" ]; then set -a && . "$(abspath $(ENV_FILE))" && set +a; fi; \
+	$(COMPOSE) run --rm migrate -path=/migrations -database "$(MIGRATE_DSN)" down 1
+
+db-migrate-version:
+	@if [ -f "$(ENV_FILE)" ]; then set -a && . "$(abspath $(ENV_FILE))" && set +a; fi; \
+	$(COMPOSE) run --rm migrate -path=/migrations -database "$(MIGRATE_DSN)" version

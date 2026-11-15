@@ -1,24 +1,194 @@
 openapi: 3.1.0
 info:
   title: Avito AI Buddy API
-  version: 0.1.0
+  version: 1.0.0
   description: |
-    Контракт API AI-бадди. На текущем этапе реализованы только служебные
-    эндпоинты живости и готовности; бизнес-эндпоинты появятся после
-    согласования specs/access-request.md.
+    Контракт backend для сценария «запрос доступа в пространство своей команды».
+
+    Источник требований: `Авито_ТЗ.docx` §10.1–§10.4
+    (снимок — `docs/tz/avito-tz.md`). Поведение, состояния и негативные случаи —
+    `specs/access-request.md`.
+
+    Общие правила:
+      * базовый префикс `/api/v1`, кроме служебных `/healthz` и `/readyz`;
+      * идентификатор тестового пользователя — заголовок `X-Test-User-Id`
+        (по умолчанию `usr_intern_01`); роль, команда и аппрувер берутся только
+        из серверного профиля;
+      * все ответы — JSON, кроме ошибок upstream-таймаута, которые тоже JSON
+        (формат плоский, см. `ApiError`);
+      * изменяющие запросы обязаны быть идемпотентными: `confirm` требует
+        `Idempotency-Key`;
+      * всё, что не описано в §10 ТЗ, помечено в `x-extensions`.
+  contact:
+    name: Команда AI-buddy
 servers:
   - url: http://localhost:8080
     description: Локальный backend
 tags:
+  - name: context
+    description: Контекст пользователя, этапы сценария и активная операция
+  - name: chat
+    description: Диалог с AI-агентом
+  - name: operations
+    description: Подтверждение и сверка операции
   - name: system
-    description: Служебные проверки
+    description: Служебные проверки (расширение)
+  - name: test-support
+    description: Демонстрационные профили (расширение)
+
 paths:
+  /api/v1/context:
+    get:
+      tags: [context]
+      operationId: getContext
+      summary: Контекст пользователя, этапы сценария и активные заявки
+      description: |
+        Закрывает FR-01, FR-07, FR-08 и AC-06: единственный источник состояния
+        экрана после перезагрузки страницы (§10.1 ТЗ).
+      parameters:
+        - $ref: "#/components/parameters/TestUserId"
+      responses:
+        "200":
+          description: Контекст текущего пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContextResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/v1/chat/messages:
+    post:
+      tags: [chat]
+      operationId: postChatMessage
+      summary: Сообщение в чат
+      description: |
+        Закрывает FR-02, FR-03, FR-04. Возвращает текст ответа, явно помеченные
+        тестовые источники и (опционально) карточку черновика либо отказ RBAC
+        (§10.2 ТЗ).
+
+        Отказ RBAC — часть нормального диалога: HTTP 200, текст отказа в `reply`
+        и детали в `rbac_denial`. Изменяющая операция в этом случае не создаётся.
+      parameters:
+        - $ref: "#/components/parameters/TestUserId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatRequest"
+      responses:
+        "200":
+          description: Ответ агента
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatResponse"
+        "400":
+          $ref: "#/components/responses/ValidationFailed"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "504":
+          $ref: "#/components/responses/UpstreamTimeout"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/v1/operations/{operation_id}/confirm:
+    post:
+      tags: [operations]
+      operationId: confirmOperation
+      summary: Подтверждение и отправка заявки в сервис-имитацию
+      description: |
+        Закрывает FR-05, FR-06, FR-09, FR-10, FR-11 и AC-01…AC-04 (§10.3 ТЗ).
+
+        Порядок проверок: принадлежность операции пользователю → `draft_version`
+        → состояние операции → RBAC → валидация параметров → вызов сервиса
+        доступов. Сервис вызывается только после явного подтверждения и только
+        один раз на операцию.
+
+        Повтор с тем же `Idempotency-Key` возвращает сохранённый ответ и заголовок
+        `x-idempotent-replay: true`.
+      parameters:
+        - $ref: "#/components/parameters/OperationId"
+        - $ref: "#/components/parameters/TestUserId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmRequest"
+      responses:
+        "200":
+          description: |
+            Операция отправлена или уже была отправлена ранее:
+            `operation_status` = `submitting` либо `succeeded` с заявкой.
+          headers:
+            x-idempotent-replay:
+              $ref: "#/components/headers/IdempotentReplay"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfirmResponse"
+        "400":
+          $ref: "#/components/responses/ValidationFailed"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/RbacDenied"
+        "404":
+          $ref: "#/components/responses/OperationNotFound"
+        "409":
+          $ref: "#/components/responses/DraftVersionConflict"
+        "502":
+          $ref: "#/components/responses/UpstreamError"
+        "503":
+          $ref: "#/components/responses/UpstreamError"
+        "504":
+          $ref: "#/components/responses/UpstreamTimeout"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/v1/operations/{operation_id}/reconcile:
+    post:
+      tags: [operations]
+      operationId: reconcileOperation
+      summary: Сверка статуса после неопределённого исхода
+      description: |
+        Закрывает AC-04 (§10.4 ТЗ): проверяет по `operation_id` в сервисе-имитации,
+        была ли фактически сохранена заявка при потерянном ответе.
+
+        Заявку не создаёт и создание не повторяет — только чтение. Если сервис
+        недоступен, статус операции остаётся `unknown`.
+      parameters:
+        - $ref: "#/components/parameters/OperationId"
+        - $ref: "#/components/parameters/TestUserId"
+      responses:
+        "200":
+          description: Актуальное состояние операции после сверки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReconcileResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/OperationNotFound"
+        "503":
+          $ref: "#/components/responses/UpstreamError"
+        "504":
+          $ref: "#/components/responses/UpstreamTimeout"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
   /healthz:
     get:
       tags: [system]
       operationId: getLiveness
       summary: Liveness-проверка
-      description: Возвращает 200, если процесс backend запущен.
+      description: Возвращает 200, если процесс backend запущен. Расширение (не в §10 ТЗ).
       responses:
         "200":
           description: Сервис запущен
@@ -26,12 +196,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Health"
+
   /readyz:
     get:
       tags: [system]
       operationId: getReadiness
       summary: Готовность сервиса и зависимостей
-      description: Проверяет TCP-доступность PostgreSQL и Redis.
+      description: |
+        Проверяет доступность зависимостей backend (БД). Возвращает 503, если
+        зависимость недоступна. Расширение (не в §10 ТЗ).
       responses:
         "200":
           description: Все настроенные зависимости доступны
@@ -40,41 +213,630 @@ paths:
               schema:
                 $ref: "#/components/schemas/Readiness"
         "503":
-          description: Хотя бы одна зависимость недоступна
+          description: Зависимости недоступны
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Readiness"
+
+  /api/v1/test-profiles:
+    get:
+      tags: [test-support]
+      operationId: listTestProfiles
+      summary: Список синтетических профилей для переключателя в шапке
+      description: |
+        Расширение: §4 ТЗ требует переключатель профиля для демонстрации, §10 не
+        описывает API. Возвращает только сидовые профили (§7.1 ТЗ) без секретов.
+      responses:
+        "200":
+          description: Профили, доступные для переключения
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestProfileList"
+
 components:
+  parameters:
+    TestUserId:
+      name: X-Test-User-Id
+      in: header
+      required: false
+      description: |
+        Идентификатор синтетического профиля (§7.1 ТЗ). По умолчанию
+        `usr_intern_01`. Роль, команда и аппрувер определяются сервером по этому
+        значению и не могут быть переданы в теле запроса.
+      schema:
+        type: string
+        enum:
+          - usr_intern_01
+          - usr_intern_02
+          - usr_lead_01
+          - usr_lead_02
+        default: usr_intern_01
+    OperationId:
+      name: operation_id
+      in: path
+      required: true
+      description: Идентификатор операции (черновика/отправки), выданный backend.
+      schema:
+        type: string
+        pattern: "^op_[0-9]{1,10}$"
+        examples: ["op_5512"]
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: |
+        Ключ идемпотентности (§10.3 ТЗ). Область дедупликации —
+        `(user_id, operation_id, Idempotency-Key)`. Рекомендуемый формат:
+        `idem_{operation_id}_v{draft_version}`.
+      schema:
+        type: string
+        minLength: 8
+        maxLength: 128
+        examples: ["idem_op_5512_v1"]
+
+  headers:
+    IdempotentReplay:
+      description: |
+        `true`, если ответ взят из сохранённого результата первого запроса с тем
+        же `Idempotency-Key` (расширение).
+      schema:
+        type: boolean
+        examples: [true]
+
+  responses:
+    ValidationFailed:
+      description: Невалидные параметры или отсутствует `Idempotency-Key`
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          examples:
+            missing_idempotency_key:
+              value:
+                error_code: VALIDATION_FAILED
+                message: "Заголовок Idempotency-Key обязателен для подтверждения операции."
+    Unauthorized:
+      description: Профиль из `X-Test-User-Id` не найден (расширение)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          examples:
+            unknown_profile:
+              value:
+                error_code: USER_NOT_FOUND
+                message: "Профиль 'usr_unknown' не найден."
+    RbacDenied:
+      description: Действие запрещено ролевой политикой (AC-02)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          examples:
+            denied:
+              value:
+                error_code: RBAC_ACCESS_DENIED
+                message: "Роли 'intern' запрещено запрашивать доступ к ресурсу 'db_fintech_prod_cluster'."
+    OperationNotFound:
+      description: Операция не найдена или принадлежит другому пользователю (FR-09)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          examples:
+            not_found:
+              value:
+                error_code: OPERATION_NOT_FOUND
+                message: "Операция 'op_9999' не найдена."
+    DraftVersionConflict:
+      description: Черновик изменился, требуется новое подтверждение
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          examples:
+            conflict:
+              value:
+                error_code: DRAFT_VERSION_CONFLICT
+                message: "Черновик изменён: актуальная версия 2, в запросе 1."
+                details:
+                  current_draft_version: 2
+                  requested_draft_version: 1
+    UpstreamError:
+      description: |
+        Сервис доступов недоступен или ответил ошибкой. Операция переходит в
+        `failed` (502 — сервис ответил ошибкой, 503 — соединение не установлено).
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          examples:
+            service_unavailable:
+              value:
+                error_code: UPSTREAM_ERROR
+                message: "Сервис доступов недоступен. Заявка не создана, повтор безопасен."
+                operation_id: op_5512
+                operation_status: failed
+    UpstreamTimeout:
+      description: |
+        Ответ не получен за таймаут — запрос мог быть обработан (AC-04).
+        Операция переходит в `unknown`, повтор без сверки запрещён.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          examples:
+            timeout:
+              value:
+                error_code: UPSTREAM_TIMEOUT
+                message: "Сервис доступов не ответил вовремя. Заявка могла быть создана. Не создавайте новую заявку -нажмите «Проверить статус операции»."
+                operation_id: op_5512
+                operation_status: unknown
+    InternalError:
+      description: Внутренняя ошибка backend
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+          examples:
+            internal:
+              value:
+                error_code: INTERNAL_ERROR
+                message: "Внутренняя ошибка. Повторите попытку позже."
+
   schemas:
+    StepStatus:
+      type: string
+      description: Статус шага сценария (§4 ТЗ). Отдельная сущность от статуса операции.
+      enum: [not_started, in_progress, blocked, done]
+
+    ScenarioStep:
+      type: object
+      additionalProperties: false
+      required: [id, title, status]
+      properties:
+        id:
+          type: string
+          examples: ["step_1"]
+        title:
+          type: string
+          examples: ["Узнать правила запроса доступа"]
+        status:
+          $ref: "#/components/schemas/StepStatus"
+
+    Scenario:
+      type: object
+      additionalProperties: false
+      required: [scenario_id, title, task_instance_id, step_status, steps, next_step_hint]
+      properties:
+        scenario_id:
+          type: string
+          examples: ["scn_team_space_access"]
+        title:
+          type: string
+          examples: ["Получение доступа в пространство команды"]
+        task_instance_id:
+          type: string
+          description: Единица анализа аналитики (§6 ТЗ).
+          examples: ["tsk_901"]
+        step_status:
+          $ref: "#/components/schemas/StepStatus"
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/ScenarioStep"
+        next_step_hint:
+          type: string
+          description: Что делать дальше. Никогда не утверждает, что доступ выдан.
+          examples: ["Подтвердите карточку запроса или уточните параметры в чате."]
+
+    User:
+      type: object
+      additionalProperties: false
+      required: [user_id, name, role, team_id, team_name, mentor_handle, approver_name]
+      properties:
+        user_id:
+          type: string
+          examples: ["usr_intern_01"]
+        name:
+          type: string
+          examples: ["Алексей Смирнов"]
+        role:
+          type: string
+          enum: [intern, mentor, lead]
+        team_id:
+          type: string
+          examples: ["team_auto_backend"]
+        team_name:
+          type: string
+          examples: ["Auto Backend"]
+        mentor_handle:
+          type: string
+          examples: ["@ivan_petrov"]
+        approver_name:
+          type: string
+          description: Маршрут согласования, который видит пользователь в карточке (FR-04).
+          examples: ["Дмитрий Волков (Team Lead)"]
+
+    ContextResponse:
+      type: object
+      additionalProperties: false
+      required: [user, scenario, active_operation]
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        scenario:
+          $ref: "#/components/schemas/Scenario"
+        active_operation:
+          description: Текущая операция пользователя или `null`, если её нет.
+          oneOf:
+            - $ref: "#/components/schemas/Operation"
+            - type: "null"
+
+    OperationStatus:
+      type: string
+      description: |
+        Статус отправки операции (§4 ТЗ). `unknown` — запрос мог дойти до сервиса,
+        но ответ потерян: новая заявка не создаётся, нужна сверка.
+      enum: [draft, awaiting_confirmation, submitting, succeeded, failed, unknown]
+
+    OperationPayload:
+      type: object
+      additionalProperties: false
+      description: |
+        Параметры карточки. `approver_id` и `resource_title` подставляет backend из
+        каталога и справочника команды — они не приходят от LLM (§8.1 ТЗ).
+      required: [resource_id, resource_title, access_level, justification, approver_id, approver_name]
+      properties:
+        resource_id:
+          type: string
+          enum:
+            - space_auto_backend_wiki
+            - repo_auto_core_sandbox
+            - space_goods_search_wiki
+            - db_fintech_prod_cluster
+        resource_title:
+          type: string
+          examples: ["Пространство базы знаний Auto Backend"]
+        access_level:
+          type: string
+          enum: [read, write]
+        justification:
+          type: string
+          minLength: 10
+          maxLength: 300
+          examples: ["Прохождение онбординга 1-й недели, ведение заметок"]
+        approver_id:
+          type: string
+          examples: ["usr_lead_01"]
+        approver_name:
+          type: string
+          examples: ["Дмитрий Волков"]
+
+    TicketStatus:
+      type: string
+      description: Статус заявки во внешнем сервисе (§4 ТЗ). MVP-имитация возвращает `pending`.
+      enum: [pending, approved, rejected]
+
+    Ticket:
+      type: object
+      additionalProperties: false
+      required: [ticket_id, external_status, created_at]
+      properties:
+        ticket_id:
+          type: string
+          examples: ["REQ-2026-0842"]
+        external_status:
+          $ref: "#/components/schemas/TicketStatus"
+        created_at:
+          type: string
+          format: date-time
+          examples: ["2026-11-10T12:30:00Z"]
+        resource_id:
+          type: string
+          description: |
+            Присутствует в ответе `confirm` (§10.3 ТЗ); может отсутствовать в
+            ответе `reconcile` (§10.4 ТЗ).
+          enum:
+            - space_auto_backend_wiki
+            - repo_auto_core_sandbox
+            - space_goods_search_wiki
+            - db_fintech_prod_cluster
+        access_level:
+          type: string
+          enum: [read, write]
+        approver_name:
+          type: string
+          examples: ["Дмитрий Волков"]
+
+    Operation:
+      type: object
+      additionalProperties: false
+      required: [operation_id, operation_status, draft_version, payload, ticket]
+      properties:
+        operation_id:
+          type: string
+          examples: ["op_5512"]
+        operation_status:
+          $ref: "#/components/schemas/OperationStatus"
+        draft_version:
+          type: integer
+          minimum: 1
+          description: Версия черновика. Подтверждение привязано к версии (FR-05).
+        payload:
+          $ref: "#/components/schemas/OperationPayload"
+        ticket:
+          description: Заявка сервиса-имитации; `null`, пока операция не `succeeded`.
+          oneOf:
+            - $ref: "#/components/schemas/Ticket"
+            - type: "null"
+
+    ChatRequest:
+      type: object
+      additionalProperties: false
+      required: [task_instance_id, message]
+      properties:
+        task_instance_id:
+          type: string
+          examples: ["tsk_901"]
+        message:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          examples: ["Оформи мне доступ на запись в базу знаний нашей команды Auto Backend для прохождения чек-листа первой недели"]
+        handoff_requested:
+          type: boolean
+          default: false
+          description: |
+            Расширение: пользователь нажал «Написать наставнику» (§4 ТЗ требует
+            кнопку, §10 не описывает вызов). Backend фиксирует событие
+            `handoff_requested`.
+        simulate_mode:
+          type: string
+          description: |
+            Расширение для демонстрации негативных сценариев в чате: провайдер LLM
+            недоступен. Значения совпадают с `ConfirmRequest.simulate_mode`.
+          enum: [normal, service_error]
+          default: normal
+
+    Source:
+      type: object
+      additionalProperties: false
+      required: [doc_id, title, is_synthetic]
+      properties:
+        doc_id:
+          type: string
+          examples: ["doc_01_onboarding_access"]
+        title:
+          type: string
+          description: Заголовок с обязательным маркером `[ТЕСТОВАЯ ИНСТРУКЦИЯ]` (§9 ТЗ).
+          examples: ["[ТЕСТОВАЯ ИНСТРУКЦИЯ] Порядок запроса доступов на первой неделе стажировки"]
+        is_synthetic:
+          type: boolean
+          const: true
+
+    RbacDenial:
+      type: object
+      additionalProperties: false
+      description: |
+        Отказ ролевой политики внутри чата (§10.2 ТЗ: «или отказ RBAC»). Форма —
+        расширение, значения полей заданы политикой `specs/access-request.md` §11.3.
+      required: [error_code, message, resource_id, access_level]
+      properties:
+        error_code:
+          type: string
+          const: RBAC_ACCESS_DENIED
+        message:
+          type: string
+          examples: ["Роли 'intern' запрещено запрашивать уровень 'write' к ресурсу 'space_goods_search_wiki'."]
+        resource_id:
+          type: string
+          enum:
+            - space_auto_backend_wiki
+            - repo_auto_core_sandbox
+            - space_goods_search_wiki
+            - db_fintech_prod_cluster
+        access_level:
+          type: string
+          enum: [read, write, admin]
+
+    ChatResponse:
+      type: object
+      additionalProperties: false
+      required: [task_instance_id, reply, sources, proposed_operation, rbac_denial, handoff_suggested]
+      properties:
+        task_instance_id:
+          type: string
+          examples: ["tsk_901"]
+        reply:
+          type: string
+        sources:
+          type: array
+          description: Только реально использованные и разрешённые документы.
+          items:
+            $ref: "#/components/schemas/Source"
+        proposed_operation:
+          description: Карточка черновика; `null`, если черновик не создавался.
+          oneOf:
+            - $ref: "#/components/schemas/Operation"
+            - type: "null"
+        rbac_denial:
+          description: Заполнен, если пользователь просил недоступный ресурс/уровень (AC-02).
+          oneOf:
+            - $ref: "#/components/schemas/RbacDenial"
+            - type: "null"
+        handoff_suggested:
+          type: boolean
+          description: Признак «предложить обращение к наставнику» (AC-05).
+
+    ConfirmRequest:
+      type: object
+      additionalProperties: false
+      required: [draft_version]
+      properties:
+        draft_version:
+          type: integer
+          minimum: 1
+          description: Версия черновика, которую пользователь видел в карточке (FR-05).
+        simulate_mode:
+          type: string
+          description: |
+            Режим демонстрации ошибок (§10.3 ТЗ): `normal` — обычная отправка,
+            `timeout` — потерянный ответ (AC-04), `service_error` — отказ сервиса
+            (FR-11).
+          enum: [normal, timeout, service_error]
+          default: normal
+
+    ConfirmResponse:
+      type: object
+      additionalProperties: false
+      required: [operation_id, operation_status, ticket, scenario_step_status, next_step_hint]
+      properties:
+        operation_id:
+          type: string
+          examples: ["op_5512"]
+        operation_status:
+          $ref: "#/components/schemas/OperationStatus"
+        ticket:
+          description: Заявка сервиса-имитации; `null`, пока операция не `succeeded`.
+          oneOf:
+            - $ref: "#/components/schemas/Ticket"
+            - type: "null"
+        scenario_step_status:
+          $ref: "#/components/schemas/StepStatus"
+        next_step_hint:
+          type: string
+          description: |
+            Объясняет ожидание согласования. Обязан содержать ID заявки, если она
+            создана, и не утверждать, что доступ выдан (FR-08).
+
+    ReconcileResponse:
+      type: object
+      additionalProperties: false
+      required: [operation_id, operation_status, ticket, message]
+      properties:
+        operation_id:
+          type: string
+          examples: ["op_5512"]
+        operation_status:
+          $ref: "#/components/schemas/OperationStatus"
+        ticket:
+          oneOf:
+            - $ref: "#/components/schemas/Ticket"
+            - type: "null"
+        message:
+          type: string
+          examples: ["Статус успешно восстановлен: заявка REQ-2026-0842 была сохранена сервисом и находится в статусе pending."]
+
+    ErrorCode:
+      type: string
+      description: |
+        Каталог кодов ошибок (`specs/access-request.md` §13.1). `USER_NOT_FOUND` —
+        расширение: §10.3 ТЗ не описывает неизвестный профиль.
+      enum:
+        - VALIDATION_FAILED
+        - USER_NOT_FOUND
+        - RBAC_ACCESS_DENIED
+        - OPERATION_NOT_FOUND
+        - DRAFT_VERSION_CONFLICT
+        - UPSTREAM_TIMEOUT
+        - UPSTREAM_ERROR
+        - INTERNAL_ERROR
+
+    ApiError:
+      type: object
+      additionalProperties: false
+      required: [error_code, message]
+      properties:
+        error_code:
+          $ref: "#/components/schemas/ErrorCode"
+        message:
+          type: string
+        operation_id:
+          type: string
+          description: Присутствует, если ошибка связана с операцией.
+        operation_status:
+          $ref: "#/components/schemas/OperationStatus"
+        details:
+          type: object
+          additionalProperties: true
+          description: Машиночитаемые детали (например, актуальная версия черновика).
+
     Health:
       type: object
+      additionalProperties: false
       required: [status]
       properties:
         status:
           type: string
           const: ok
-    DependencyStatus:
-      type: string
-      enum: [ok, error, skipped]
-    DependencyCheck:
-      type: object
-      required: [status]
-      properties:
-        status:
-          $ref: "#/components/schemas/DependencyStatus"
-        error:
-          type: string
-          description: Текст ошибки, если проверка не прошла
+
     Readiness:
       type: object
-      required: [status, checks]
+      additionalProperties: false
+      required: [status, dependencies]
       properties:
         status:
           type: string
           enum: [ok, degraded]
-        checks:
+        dependencies:
           type: object
           additionalProperties:
-            $ref: "#/components/schemas/DependencyCheck"
-          description: Результаты проверки по имени зависимости
+            type: string
+            enum: [ok, unavailable]
+
+    TestProfile:
+      type: object
+      additionalProperties: false
+      required: [user_id, name, role, team_id, team_name]
+      properties:
+        user_id:
+          type: string
+          enum:
+            - usr_intern_01
+            - usr_intern_02
+            - usr_lead_01
+            - usr_lead_02
+        name:
+          type: string
+        role:
+          type: string
+          enum: [intern, mentor, lead]
+        team_id:
+          type: string
+        team_name:
+          type: string
+
+    TestProfileList:
+      type: object
+      additionalProperties: false
+      required: [profiles]
+      properties:
+        profiles:
+          type: array
+          items:
+            $ref: "#/components/schemas/TestProfile"
+
+x-extensions:
+  description: |
+    Всё, что не описано в §10 ТЗ. Каждый пункт согласован со спецификацией
+    (`specs/access-request.md` §15) и не меняет поведение из ТЗ.
+  items:
+    - id: test-profiles-endpoint
+      summary: "GET /api/v1/test-profiles для переключателя профиля (§4 ТЗ требует UI, §10 — нет API)"
+    - id: user-not-found
+      summary: "401 USER_NOT_FOUND вместо молчаливого фолбэка на usr_intern_01"
+    - id: idempotent-replay-header
+      summary: "заголовок x-idempotent-replay в ответе на повторный confirm"
+    - id: handoff-requested-flag
+      summary: "флаг handoff_requested в ChatRequest вместо отдельного эндпоинта"
+    - id: chat-simulate-mode
+      summary: "simulate_mode в ChatRequest для демонстрации недоступности LLM"
+    - id: rbac-denial-shape
+      summary: "форма объекта rbac_denial в ChatResponse"
+    - id: system-endpoints
+      summary: "GET /healthz и GET /readyz — служебные эндпоинты прототипа"
+    - id: optional-ticket-fields
+      summary: "resource_id, access_level, approver_name в Ticket опциональны (§10.3 есть, §10.4 нет)"

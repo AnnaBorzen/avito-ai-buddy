@@ -56,3 +56,7 @@ __pycache__/
 evals/runs/*
 !evals/runs/.gitkeep
 
+frontend/data/
+frontend/coverage/
+
+AGENTS.md

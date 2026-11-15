@@ -1,0 +1,225 @@
+openapi: 3.1.0
+info:
+  title: Access Service Mock API (сервис-имитация доступов)
+  version: 1.0.0
+  description: |
+    Внутренний контракт сервиса-имитации корпоративного сервиса доступов.
+
+    Роль в сценарии: владелец заявки (`Ticket`) и её статуса. Backend вызывает
+    сервис только после подтверждения пользователем (§10.3 ТЗ) и только через
+    адаптер, который отвечает за идемпотентность и различение «не дошло» /
+    «неизвестно».
+
+    Правила:
+      * сервис не знает о роли пользователя — RBAC проверяет backend;
+      * `operation_id` — ключ идемпотентности: повтор с тем же `operation_id`
+        возвращает ранее созданную заявку, вторая заявка не создаётся;
+      * `external_status` — источник истины для `TicketStatus`, backend его не
+        переписывает;
+      * эндпоинты `/internal/*` не публикуются наружу и не описаны в §10 ТЗ
+        (это внутренняя граница прототипа, см. `docs/architecture/02-services.md`).
+servers:
+  - url: http://localhost:8081
+    description: Локальный сервис-имитация
+tags:
+  - name: access-requests
+    description: Создание заявки и чтение её состояния
+  - name: system
+    description: Служебные проверки
+
+paths:
+  /internal/access-requests:
+    post:
+      tags: [access-requests]
+      operationId: createAccessRequest
+      summary: Создать заявку на доступ
+      description: |
+        Создаёт заявку в статусе `pending`. Метод идемпотентен по `operation_id`:
+        повторный вызов с тем же значением возвращает существующую заявку с
+        кодом 200 вместо 201.
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          description: Ключ идемпотентности, проброшенный backend из подтверждения пользователя.
+          schema:
+            type: string
+            minLength: 8
+            maxLength: 128
+        - name: X-Simulate-Mode
+          in: header
+          required: false
+          description: |
+            Демонстрационный режим (§10.3 ТЗ): `timeout` — сервис не отвечает за
+            таймаут адаптера (проверка AC-04); `service_error` — сервис отвечает
+            503, заявка не создаётся (FR-11).
+          schema:
+            type: string
+            enum: [normal, timeout, service_error]
+            default: normal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAccessRequest"
+      responses:
+        "201":
+          description: Заявка создана
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TicketRecord"
+        "200":
+          description: Заявка уже существует для этого `operation_id` (повтор)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TicketRecord"
+        "400":
+          description: Невалидный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceError"
+        "503":
+          description: |
+            Сервис не принял запрос (заявка не создана). Backend помечает операцию
+            `failed` — повтор безопасен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceError"
+    get:
+      tags: [access-requests]
+      operationId: findAccessRequest
+      summary: Найти заявку по operation_id
+      description: |
+        Используется сверкой (AC-04): сообщает, была ли фактически сохранена
+        заявка при потерянном ответе. Побочных эффектов нет.
+      parameters:
+        - name: operation_id
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: "^op_[0-9]{1,10}$"
+      responses:
+        "200":
+          description: "Результат поиска (`found: false` — заявки нет)"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccessRequestLookup"
+        "503":
+          description: Сервис недоступен (статус операции остаётся `unknown`)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceError"
+
+  /healthz:
+    get:
+      tags: [system]
+      operationId: getAccessServiceHealth
+      summary: Liveness сервиса-имитации
+      responses:
+        "200":
+          description: Сервис запущен
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [status]
+                properties:
+                  status:
+                    type: string
+                    const: ok
+
+components:
+  schemas:
+    CreateAccessRequest:
+      type: object
+      additionalProperties: false
+      description: |
+        Данные заявки. `user_id`, `team_id`, `approver_id` подставляет backend из
+        серверного контекста — они не могут прийти из чата или от LLM.
+      required: [operation_id, user_id, team_id, resource_id, access_level, justification, approver_id]
+      properties:
+        operation_id:
+          type: string
+          description: Ключ идемпотентности и связь с операцией backend.
+          pattern: "^op_[0-9]{1,10}$"
+        user_id:
+          type: string
+        team_id:
+          type: string
+        resource_id:
+          type: string
+          enum:
+            - space_auto_backend_wiki
+            - repo_auto_core_sandbox
+            - space_goods_search_wiki
+            - db_fintech_prod_cluster
+        access_level:
+          type: string
+          enum: [read, write]
+        justification:
+          type: string
+          minLength: 10
+          maxLength: 300
+        approver_id:
+          type: string
+          description: Тимлид команды пользователя (справочник команд, не выбор пользователя).
+
+    TicketStatus:
+      type: string
+      description: Статус заявки (§4 ТЗ). Имитация возвращает `pending`.
+      enum: [pending, approved, rejected]
+
+    TicketRecord:
+      type: object
+      additionalProperties: false
+      required: [ticket_id, operation_id, external_status, created_at]
+      properties:
+        ticket_id:
+          type: string
+          examples: ["REQ-2026-0842"]
+        operation_id:
+          type: string
+        external_status:
+          $ref: "#/components/schemas/TicketStatus"
+        created_at:
+          type: string
+          format: date-time
+        resource_id:
+          type: string
+        access_level:
+          type: string
+          enum: [read, write, admin]
+        approver_name:
+          type: string
+
+    AccessRequestLookup:
+      type: object
+      additionalProperties: false
+      required: [found, ticket]
+      properties:
+        found:
+          type: boolean
+        ticket:
+          oneOf:
+            - $ref: "#/components/schemas/TicketRecord"
+            - type: "null"
+
+    ServiceError:
+      type: object
+      additionalProperties: false
+      required: [error_code, message]
+      properties:
+        error_code:
+          type: string
+          enum: [VALIDATION_FAILED, SERVICE_UNAVAILABLE]
+        message:
+          type: string

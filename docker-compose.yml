@@ -23,6 +23,17 @@ services:
       timeout: 3s
       retries: 5
 
+  migrate:
+    image: migrate/migrate:v4.18.1
+    profiles: ["tools"]
+
+    volumes:
+      - ./backend/migrations:/migrations:ro
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   redis:
     image: redis:7.4-alpine
     container_name: buddy-redis
