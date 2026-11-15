@@ -1,0 +1,370 @@
+openapi: 3.1.0
+info:
+  title: Avito AI Buddy — ML service API
+  version: 1.0.0
+  description: |
+    Внутренний API ML-сервиса (ml/). Вызывается ТОЛЬКО backend'ом, не браузером.
+
+    Сервис stateless: backend передаёт доверенный контекст пользователя (из сессии),
+    права на ресурсы, текущий черновик, последнюю операцию и короткую историю;
+    ML возвращает ответ, источники, собранные параметры и (опционально) вызов
+    инструмента `propose_access_request`. Черновик и заявку создаёт и хранит backend,
+    повторно проверяя права и параметры (FR-05, FR-09). Подтверждение/отправка
+    заявки в ML не реализуется и агенту недоступна.
+
+    Поведение агента — specs/access-request.md, детали ML — specs/ml-agent.md.
+servers:
+  - url: http://ml:8090
+    description: Внутри docker compose
+  - url: http://localhost:8090
+    description: Локально
+tags:
+  - name: agent
+  - name: debug
+  - name: system
+paths:
+  /v1/agent/turn:
+    post:
+      tags: [agent]
+      operationId: agentTurn
+      summary: Один ход диалога
+      parameters:
+        - $ref: "#/components/parameters/RequestId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TurnRequest"
+            examples:
+              ac01:
+                summary: AC-01 — подача заявки одной репликой
+                value:
+                  request_id: req-123
+                  task_instance_id: tsk_901
+                  user:
+                    user_id: usr_intern_01
+                    name: Алексей Смирнов
+                    role: intern
+                    team_id: team_auto_backend
+                    team_name: Auto Backend
+                    mentor_handle: "@ivan_petrov"
+                    approver_name: Дмитрий Волков (Team Lead)
+                  permissions:
+                    - { resource_id: space_auto_backend_wiki, allowed_levels: [read, write] }
+                    - { resource_id: repo_auto_core_sandbox, allowed_levels: [read, write] }
+                    - { resource_id: space_goods_search_wiki, allowed_levels: [read] }
+                    - { resource_id: db_fintech_prod_cluster, allowed_levels: [] }
+                  draft: null
+                  operation: null
+                  expected_slot: null
+                  history: []
+                  message: Оформи мне доступ на запись в базу знаний нашей команды Auto Backend для прохождения чек-листа первой недели
+      responses:
+        "200":
+          description: Ответ агента
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TurnResponse"
+              examples:
+                proposal:
+                  value:
+                    reply: "Подготовил черновик заявки. Ресурс: Пространство базы знаний и документации Auto Backend; уровень: редактирование (write); обоснование: «Для прохождения чек-листа первой недели». Проверьте карточку и подтвердите отправку — заявка уйдёт на согласование (Дмитрий Волков (Team Lead)). Доступ появится только после согласования."
+                    reply_kind: proposal
+                    intent: request_access
+                    intent_confidence: 0.95
+                    sources:
+                      - doc_id: doc_01_onboarding_access
+                        title: "[ТЕСТОВАЯ ИНСТРУКЦИЯ] Порядок запроса доступов на первой неделе стажировки"
+                        section: Как происходит согласование и что делать после отправки
+                        excerpt: После подтверждения карточки в интерфейсе создаётся заявка…
+                        is_synthetic: true
+                        source_type: synthetic_instruction
+                        source_label: Тестовая инструкция
+                        source_url: null
+                        score: 1.0
+                    slots: { resource_id: space_auto_backend_wiki, access_level: write, justification: Для прохождения чек-листа первой недели }
+                    missing_slots: []
+                    expected_slot: null
+                    tool_call:
+                      name: propose_access_request
+                      arguments: { resource_id: space_auto_backend_wiki, access_level: write, justification: Для прохождения чек-листа первой недели }
+                    policy: { allowed: true, code: OK, message: "", allowed_levels: [read, write] }
+                    handoff_suggested: false
+                    handoff_target: "@ivan_petrov"
+                    guard: { injection_detected: false, flags: [] }
+                    meta: { mode: local, model: local-nlu, retriever: bm25, latency_ms: 3.1, scenario_id: scn_team_space_access, scenario_version: "2026-11-15.1", service_version: "1.0.0" }
+                    analytics:
+                      event: action_proposed
+                      properties: { intent: request_access, reply_kind: proposal, source_doc_ids: [doc_01_onboarding_access], handoff_suggested: false, injection_detected: false, mode: local, scenario_id: scn_team_space_access, scenario_version: "2026-11-15.1" }
+        "400":
+          $ref: "#/components/responses/ValidationError"
+  /v1/knowledge/search:
+    post:
+      tags: [debug]
+      operationId: knowledgeSearch
+      summary: Поиск по базе знаний с учётом прав пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user, query]
+              properties:
+                user: { $ref: "#/components/schemas/UserContext" }
+                query: { type: string }
+                k: { type: integer, minimum: 1, maximum: 20, default: 5 }
+      responses:
+        "200":
+          description: Найденные фрагменты (только из доступных пользователю документов)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hits: { type: array, items: { $ref: "#/components/schemas/Source" } }
+        "400":
+          $ref: "#/components/responses/ValidationError"
+  /v1/nlu/parse:
+    post:
+      tags: [debug]
+      operationId: nluParse
+      summary: Интент и параметры заявки из реплики
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user, message]
+              properties:
+                user: { $ref: "#/components/schemas/UserContext" }
+                message: { type: string }
+                expected_slot: { $ref: "#/components/schemas/SlotName" }
+      responses:
+        "200":
+          description: Результат NLU
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  intent: { $ref: "#/components/schemas/Intent" }
+                  confidence: { type: number }
+                  ranking: { type: array, items: { type: array, prefixItems: [{ type: string }, { type: number }] } }
+                  slots: { $ref: "#/components/schemas/Slots" }
+        "400":
+          $ref: "#/components/responses/ValidationError"
+  /v1/tools:
+    get:
+      tags: [agent]
+      operationId: listTools
+      summary: Схемы инструментов агента (function calling / MCP)
+      responses:
+        "200":
+          description: Список инструментов
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tools: { type: array, items: { type: object } }
+  /healthz:
+    get:
+      tags: [system]
+      operationId: mlLiveness
+      responses:
+        "200": { description: Процесс жив }
+  /readyz:
+    get:
+      tags: [system]
+      operationId: mlReadiness
+      responses:
+        "200":
+          description: Индекс построен, классификатор обучен
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, const: ok }
+                  version: { type: string }
+                  documents: { type: integer }
+                  chunks: { type: integer }
+                  intents: { type: array, items: { type: string } }
+                  config: { type: object, description: "Публичная конфигурация без секретов" }
+components:
+  parameters:
+    RequestId:
+      name: X-Request-Id
+      in: header
+      required: false
+      schema: { type: string }
+      description: Сквозной идентификатор запроса; возвращается в ответе.
+  responses:
+    ValidationError:
+      description: Невалидный запрос
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string, enum: [VALIDATION_ERROR, NOT_FOUND, METHOD_NOT_ALLOWED, INTERNAL_ERROR] }
+            message: { type: string }
+            request_id: { type: string }
+    UserContext:
+      type: object
+      description: Доверенный контекст из серверной сессии. Текст сообщения его не меняет.
+      required: [user_id, role, team_id]
+      properties:
+        user_id: { type: string }
+        name: { type: string }
+        role: { type: string, enum: [intern, mentor, lead] }
+        team_id: { type: string }
+        team_name: { type: string }
+        mentor_handle: { type: string }
+        approver_name: { type: string }
+    Permission:
+      type: object
+      required: [resource_id, allowed_levels]
+      properties:
+        resource_id: { type: string }
+        allowed_levels: { type: array, items: { type: string, enum: [read, write, admin] } }
+    SlotName:
+      type: [string, "null"]
+      enum: [resource_id, access_level, justification, null]
+    Slots:
+      type: object
+      properties:
+        resource_id: { type: [string, "null"] }
+        access_level: { type: [string, "null"], enum: [read, write, admin, null] }
+        justification: { type: [string, "null"] }
+    Operation:
+      type: object
+      properties:
+        operation_id: { type: string }
+        operation_status: { type: string, enum: [draft, awaiting_confirmation, submitting, succeeded, failed, unknown] }
+        ticket:
+          type: [object, "null"]
+          properties:
+            ticket_id: { type: string }
+            external_status: { type: string, enum: [pending, approved, rejected, provisioned] }
+            resource_id: { type: string }
+            access_level: { type: string }
+    TurnRequest:
+      type: object
+      required: [user, message]
+      properties:
+        request_id: { type: string }
+        task_instance_id: { type: string }
+        user: { $ref: "#/components/schemas/UserContext" }
+        permissions:
+          type: array
+          description: Права пользователя на ресурсы каталога (источник истины — backend). Если не передано, используется встроенная матрица из ТЗ.
+          items: { $ref: "#/components/schemas/Permission" }
+        draft:
+          description: Текущие собранные параметры (из предыдущего ответа `slots`).
+          oneOf: [{ $ref: "#/components/schemas/Slots" }, { type: "null" }]
+        expected_slot:
+          description: Значение `expected_slot` из предыдущего ответа — какой параметр агент спросил.
+          $ref: "#/components/schemas/SlotName"
+        operation:
+          oneOf: [{ $ref: "#/components/schemas/Operation" }, { type: "null" }]
+        history:
+          type: array
+          maxItems: 12
+          items:
+            type: object
+            properties:
+              role: { type: string, enum: [user, assistant] }
+              content: { type: string, maxLength: 2000 }
+        message: { type: string, minLength: 1, maxLength: 2000 }
+    Source:
+      type: object
+      properties:
+        doc_id: { type: string }
+        title: { type: string }
+        section: { type: string }
+        excerpt: { type: string }
+        is_synthetic: { type: boolean, description: "true → в UI бейдж [Тестовая инструкция]" }
+        source_type: { type: string, enum: [synthetic_instruction, case_material, public_playbook] }
+        source_label: { type: string }
+        source_url: { type: [string, "null"] }
+        score: { type: number }
+    Intent:
+      type: string
+      enum: [greeting, ask_procedure, ask_levels, ask_approval, ask_restrictions, ask_plan, ask_tools, request_access,
+             check_status, handoff, out_of_scope, out_of_catalog, injection, uncertain]
+    TurnResponse:
+      type: object
+      required: [reply, reply_kind, intent, sources, slots, missing_slots, tool_call, handoff_suggested, guard, meta]
+      properties:
+        reply: { type: string }
+        reply_kind:
+          type: string
+          description: Соответствует UI-состояниям ТЗ (ответ, уточнение, нет данных, нет прав, подтверждение…)
+          enum: [answer, clarification, proposal, denied, no_data, status, handoff, greeting]
+        intent: { $ref: "#/components/schemas/Intent" }
+        intent_confidence: { type: number }
+        sources: { type: array, items: { $ref: "#/components/schemas/Source" } }
+        slots: { $ref: "#/components/schemas/Slots" }
+        missing_slots: { type: array, items: { type: string } }
+        expected_slot: { $ref: "#/components/schemas/SlotName" }
+        tool_call:
+          description: Предложение создать черновик. Backend валидирует аргументы, проверяет RBAC, создаёт operation (awaiting_confirmation, draft_version+1).
+          oneOf:
+            - type: "null"
+            - type: object
+              required: [name, arguments]
+              properties:
+                name: { type: string, const: propose_access_request }
+                arguments:
+                  type: object
+                  required: [resource_id, access_level, justification]
+                  properties:
+                    resource_id: { type: string }
+                    access_level: { type: string, enum: [read, write] }
+                    justification: { type: string, minLength: 10, maxLength: 300 }
+        policy:
+          oneOf:
+            - type: "null"
+            - type: object
+              properties:
+                allowed: { type: boolean }
+                code: { type: string, enum: [OK, RBAC_ACCESS_DENIED, RBAC_LEVEL_NOT_ALLOWED, LEVEL_UNSUPPORTED, RESOURCE_UNKNOWN] }
+                message: { type: string }
+                allowed_levels: { type: array, items: { type: string } }
+        handoff_suggested: { type: boolean }
+        handoff_target: { type: [string, "null"] }
+        guard:
+          type: object
+          properties:
+            injection_detected: { type: boolean }
+            flags: { type: array, items: { type: string } }
+        meta:
+          type: object
+          properties:
+            mode: { type: string, enum: [local, llm, local_fallback] }
+            model: { type: string }
+            retriever: { type: string }
+            latency_ms: { type: number }
+            scenario_id: { type: string }
+            scenario_version: { type: string }
+            service_version: { type: string }
+            llm_error: { type: string }
+        analytics:
+          type: object
+          description: Подсказка для tracking plan (answer_delivered / action_proposed) без текста диалога.
+          properties:
+            event: { type: string, enum: [answer_delivered, action_proposed] }
+            properties: { type: object }

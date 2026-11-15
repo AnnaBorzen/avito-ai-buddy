@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "avito-ai-buddy": {
+      "command": "python",
+      "args": ["-m", "buddy_ml.mcp_server"],
+      "cwd": "./ml",
+      "env": {
+        "BUDDY_USER_CONTEXT": "{\"user_id\":\"usr_intern_01\",\"role\":\"intern\",\"team_id\":\"team_auto_backend\",\"name\":\"Алексей Смирнов\",\"mentor_handle\":\"@ivan_petrov\",\"approver_name\":\"Дмитрий Волков (Team Lead)\"}",
+        "ML_PLAYBOOK_DIR": "./data/external/playbook"
+      }
+    }
+  }
+}
