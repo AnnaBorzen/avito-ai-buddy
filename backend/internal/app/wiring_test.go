@@ -32,6 +32,10 @@ var configEnvNames = []string{
 	"MCP_ENABLED",
 	"MCP_URL",
 	"MCP_TIMEOUT",
+	"ML_SERVICE_URL",
+	"ML_SERVICE_TIMEOUT",
+	"ACCESS_SERVICE_URL",
+	"ACCESS_SERVICE_TIMEOUT",
 }
 
 // TestLoadedConfigBuildsLogger — контракт между config и logger:
@@ -155,17 +159,15 @@ func TestRecoverPanicReturnsJSONError(t *testing.T) {
 	}
 
 	var payload struct {
-		Error struct {
-			Code    string `json:"code"`
-			Message string `json:"message"`
-		} `json:"error"`
+		ErrorCode string `json:"error_code"`
+		Message   string `json:"message"`
 	}
 
 	if err := json.Unmarshal(recorder.Body.Bytes(), &payload); err != nil {
 		t.Fatalf("body is not valid json: %v (%q)", err, recorder.Body.String())
 	}
 
-	if payload.Error.Code != "INTERNAL_ERROR" || payload.Error.Message == "" {
+	if payload.ErrorCode != "INTERNAL_ERROR" || payload.Message == "" {
 		t.Fatalf("unexpected error payload: %+v", payload)
 	}
 

@@ -24,6 +24,10 @@ var allEnvKeys = []string{
 	"MCP_ENABLED",
 	"MCP_URL",
 	"MCP_TIMEOUT",
+	"ML_SERVICE_URL",
+	"ML_SERVICE_TIMEOUT",
+	"ACCESS_SERVICE_URL",
+	"ACCESS_SERVICE_TIMEOUT",
 }
 
 // clearEnv изолирует тест от окружения разработчика: пустое значение = «не задано».
@@ -82,6 +86,14 @@ func TestLoadDefaults(t *testing.T) {
 	if cfg.MCP.Timeout != defaultMCPTimeout {
 		t.Errorf("unexpected MCP_TIMEOUT: got %s, want %s", cfg.MCP.Timeout, defaultMCPTimeout)
 	}
+
+	if cfg.MLService.URL != "" || cfg.AccessService.URL != "" {
+		t.Errorf("upstream services must be disabled by default: %+v / %+v", cfg.MLService, cfg.AccessService)
+	}
+
+	if cfg.MLService.Timeout != defaultMLTimeout || cfg.AccessService.Timeout != defaultAccessTimeout {
+		t.Errorf("unexpected upstream timeouts: %+v / %+v", cfg.MLService, cfg.AccessService)
+	}
 }
 
 func TestLoadFromEnvironment(t *testing.T) {
@@ -102,6 +114,10 @@ func TestLoadFromEnvironment(t *testing.T) {
 	t.Setenv("MCP_ENABLED", "true")
 	t.Setenv("MCP_URL", "https://mcp.example")
 	t.Setenv("MCP_TIMEOUT", "5s")
+	t.Setenv("ML_SERVICE_URL", "http://ml:9000")
+	t.Setenv("ML_SERVICE_TIMEOUT", "12s")
+	t.Setenv("ACCESS_SERVICE_URL", "http://access:9001")
+	t.Setenv("ACCESS_SERVICE_TIMEOUT", "7s")
 
 	cfg, err := Load()
 	if err != nil {
@@ -135,6 +151,14 @@ func TestLoadFromEnvironment(t *testing.T) {
 
 	if !cfg.MCP.Enabled || cfg.MCP.URL != "https://mcp.example" || cfg.MCP.Timeout != 5*time.Second {
 		t.Errorf("unexpected MCP config: %+v", cfg.MCP)
+	}
+
+	if cfg.MLService.URL != "http://ml:9000" || cfg.MLService.Timeout != 12*time.Second {
+		t.Errorf("unexpected ML service config: %+v", cfg.MLService)
+	}
+
+	if cfg.AccessService.URL != "http://access:9001" || cfg.AccessService.Timeout != 7*time.Second {
+		t.Errorf("unexpected access service config: %+v", cfg.AccessService)
 	}
 }
 
@@ -235,6 +259,41 @@ func TestLoadValidation(t *testing.T) {
 			name: "database url with port out of range",
 			env:  map[string]string{"DATABASE_URL": "postgres://buddy:buddy@db:99999/buddy"},
 			want: "DATABASE_URL",
+		},
+		{
+			name: "database without ml service url",
+			env: map[string]string{
+				"DATABASE_URL":       "postgres://buddy:buddy@db/buddy",
+				"ACCESS_SERVICE_URL": "http://access:9001",
+			},
+			want: "ML_SERVICE_URL",
+		},
+		{
+			name: "database without access service url",
+			env: map[string]string{
+				"DATABASE_URL":   "postgres://buddy:buddy@db/buddy",
+				"ML_SERVICE_URL": "http://ml:9000",
+			},
+			want: "ACCESS_SERVICE_URL",
+		},
+		{
+			name: "ml service url with unsupported scheme",
+			env: map[string]string{
+				"DATABASE_URL":       "postgres://buddy:buddy@db/buddy",
+				"ML_SERVICE_URL":     "ftp://ml:9000",
+				"ACCESS_SERVICE_URL": "http://access:9001",
+			},
+			want: "ML_SERVICE_URL",
+		},
+		{
+			name: "ml service with non-positive timeout",
+			env: map[string]string{
+				"DATABASE_URL":       "postgres://buddy:buddy@db/buddy",
+				"ML_SERVICE_URL":     "http://ml:9000",
+				"ML_SERVICE_TIMEOUT": "0s",
+				"ACCESS_SERVICE_URL": "http://access:9001",
+			},
+			want: "ML_SERVICE_TIMEOUT",
 		},
 		{
 			name: "invalid log level",
@@ -528,6 +587,8 @@ func TestLogValueRedactsSecrets(t *testing.T) {
 	t.Setenv("LLM_MODEL", "gpt-test")
 	t.Setenv("LLM_API_KEY", "sk-secret")
 	t.Setenv("MCP_URL", "https://mcp.example/sse?token=mcp-secret")
+	t.Setenv("ML_SERVICE_URL", "http://ml:9000")
+	t.Setenv("ACCESS_SERVICE_URL", "http://access:9001")
 
 	cfg, err := Load()
 	if err != nil {

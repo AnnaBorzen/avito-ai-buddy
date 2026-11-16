@@ -28,21 +28,25 @@ const (
 	// FormatText — формат логов text.
 	FormatText = "text"
 
-	defaultPort       = 8080
-	defaultLogLevel   = "info"
-	defaultLLMTimeout = 30 * time.Second
-	defaultMCPTimeout = 10 * time.Second
+	defaultPort          = 8080
+	defaultLogLevel      = "info"
+	defaultLLMTimeout    = 30 * time.Second
+	defaultMCPTimeout    = 10 * time.Second
+	defaultMLTimeout     = 45 * time.Second
+	defaultAccessTimeout = 10 * time.Second
 )
 
 // Config — полный набор настроек сервиса.
 type Config struct {
-	App      AppConfig      `koanf:"app"`
-	HTTP     HTTPConfig     `koanf:"http"`
-	Database DatabaseConfig `koanf:"database"`
-	Redis    RedisConfig    `koanf:"redis"`
-	Log      LogConfig      `koanf:"log"`
-	LLM      LLMConfig      `koanf:"llm"`
-	MCP      MCPConfig      `koanf:"mcp"`
+	App           AppConfig      `koanf:"app"`
+	HTTP          HTTPConfig     `koanf:"http"`
+	Database      DatabaseConfig `koanf:"database"`
+	Redis         RedisConfig    `koanf:"redis"`
+	Log           LogConfig      `koanf:"log"`
+	LLM           LLMConfig      `koanf:"llm"`
+	MCP           MCPConfig      `koanf:"mcp"`
+	MLService     UpstreamConfig `koanf:"ml_service"`
+	AccessService UpstreamConfig `koanf:"access_service"`
 }
 
 // AppConfig — общие параметры приложения.
@@ -100,6 +104,14 @@ type MCPConfig struct {
 	Timeout time.Duration `koanf:"timeout"`
 }
 
+// UpstreamConfig — адрес и таймаут внутреннего сервиса.
+type UpstreamConfig struct {
+	// URL задаётся через *_SERVICE_URL.
+	URL string `koanf:"url"`
+	// Timeout задаётся через *_SERVICE_TIMEOUT.
+	Timeout time.Duration `koanf:"timeout"`
+}
+
 // envKind задаёт тип значения, которое приходит из окружения.
 type envKind int
 
@@ -120,26 +132,30 @@ type envSpec struct {
 // Всё, чего здесь нет, игнорируется: посторонние переменные процесса (APP, PATH,
 // HTTP_PROXY) не должны попадать в koanf и ронять запуск.
 var envKeys = map[string]envSpec{
-	"APP_ENV":        {key: "app.env"},
-	"PORT":           {key: "http.port", kind: envKindInt},
-	"DATABASE_URL":   {key: "database.url"},
-	"REDIS_ADDR":     {key: "redis.addr"},
-	"LOG_LEVEL":      {key: "log.level"},
-	"LOG_FORMAT":     {key: "log.format"},
-	"LOG_ADD_SOURCE": {key: "log.add_source", kind: envKindBool},
-	"LLM_ENABLED":    {key: "llm.enabled", kind: envKindBool},
-	"LLM_BASE_URL":   {key: "llm.base_url"},
-	"LLM_API_KEY":    {key: "llm.api_key"},
-	"LLM_MODEL":      {key: "llm.model"},
-	"LLM_TIMEOUT":    {key: "llm.timeout", kind: envKindDuration},
-	"MCP_ENABLED":    {key: "mcp.enabled", kind: envKindBool},
-	"MCP_URL":        {key: "mcp.url"},
-	"MCP_TIMEOUT":    {key: "mcp.timeout", kind: envKindDuration},
+	"APP_ENV":                {key: "app.env"},
+	"PORT":                   {key: "http.port", kind: envKindInt},
+	"DATABASE_URL":           {key: "database.url"},
+	"REDIS_ADDR":             {key: "redis.addr"},
+	"LOG_LEVEL":              {key: "log.level"},
+	"LOG_FORMAT":             {key: "log.format"},
+	"LOG_ADD_SOURCE":         {key: "log.add_source", kind: envKindBool},
+	"LLM_ENABLED":            {key: "llm.enabled", kind: envKindBool},
+	"LLM_BASE_URL":           {key: "llm.base_url"},
+	"LLM_API_KEY":            {key: "llm.api_key"},
+	"LLM_MODEL":              {key: "llm.model"},
+	"LLM_TIMEOUT":            {key: "llm.timeout", kind: envKindDuration},
+	"MCP_ENABLED":            {key: "mcp.enabled", kind: envKindBool},
+	"MCP_URL":                {key: "mcp.url"},
+	"MCP_TIMEOUT":            {key: "mcp.timeout", kind: envKindDuration},
+	"ML_SERVICE_URL":         {key: "ml_service.url"},
+	"ML_SERVICE_TIMEOUT":     {key: "ml_service.timeout", kind: envKindDuration},
+	"ACCESS_SERVICE_URL":     {key: "access_service.url"},
+	"ACCESS_SERVICE_TIMEOUT": {key: "access_service.timeout", kind: envKindDuration},
 }
 
 // knownPrefixes — префиксы переменных, которые принадлежат сервису.
 // Нужны только для предупреждения об опечатках (LLM_MODLE, LOG_FORMT).
-var knownPrefixes = []string{"APP_", "HTTP_", "DATABASE_", "REDIS_", "LOG_", "LLM_", "MCP_"}
+var knownPrefixes = []string{"APP_", "HTTP_", "DATABASE_", "REDIS_", "LOG_", "LLM_", "MCP_", "ML_", "ACCESS_"}
 
 // foreignEnvKeys — переменные docker-compose и CI, которые сервис осознанно не читает.
 // Без этого списка предупреждение об опечатках срабатывало бы на каждом `make backend`.
@@ -228,21 +244,25 @@ func hasKnownPrefix(name string) bool {
 
 // defaults повторяет значения из .env.example и позволяет запускать сервис без окружения.
 var defaults = map[string]any{
-	"app.env":        EnvDev,
-	"http.port":      defaultPort,
-	"database.url":   "",
-	"redis.addr":     "",
-	"log.level":      defaultLogLevel,
-	"log.format":     "",
-	"log.add_source": false,
-	"llm.enabled":    false,
-	"llm.base_url":   "",
-	"llm.api_key":    "",
-	"llm.model":      "",
-	"llm.timeout":    defaultLLMTimeout,
-	"mcp.enabled":    false,
-	"mcp.url":        "",
-	"mcp.timeout":    defaultMCPTimeout,
+	"app.env":                EnvDev,
+	"http.port":              defaultPort,
+	"database.url":           "",
+	"redis.addr":             "",
+	"log.level":              defaultLogLevel,
+	"log.format":             "",
+	"log.add_source":         false,
+	"llm.enabled":            false,
+	"llm.base_url":           "",
+	"llm.api_key":            "",
+	"llm.model":              "",
+	"llm.timeout":            defaultLLMTimeout,
+	"mcp.enabled":            false,
+	"mcp.url":                "",
+	"mcp.timeout":            defaultMCPTimeout,
+	"ml_service.url":         "",
+	"ml_service.timeout":     defaultMLTimeout,
+	"access_service.url":     "",
+	"access_service.timeout": defaultAccessTimeout,
 }
 
 // Load читает переменные окружения поверх дефолтов и валидирует результат.
@@ -342,6 +362,21 @@ func (c *Config) Validate() error {
 	if c.Redis.Addr != "" {
 		if err := validateRedisAddr(c.Redis.Addr); err != nil {
 			problems = append(problems, err)
+		}
+	}
+
+	if c.Database.URL != "" {
+		if err := validateHTTPURL("ML_SERVICE_URL", c.MLService.URL); err != nil {
+			problems = append(problems, err)
+		}
+		if c.MLService.Timeout <= 0 {
+			problems = append(problems, fmt.Errorf("ML_SERVICE_TIMEOUT: must be positive, got %s", c.MLService.Timeout))
+		}
+		if err := validateHTTPURL("ACCESS_SERVICE_URL", c.AccessService.URL); err != nil {
+			problems = append(problems, err)
+		}
+		if c.AccessService.Timeout <= 0 {
+			problems = append(problems, fmt.Errorf("ACCESS_SERVICE_TIMEOUT: must be positive, got %s", c.AccessService.Timeout))
 		}
 	}
 
@@ -551,6 +586,14 @@ func (c Config) LogValue() slog.Value {
 			slog.Bool("enabled", c.MCP.Enabled),
 			slog.String("url", sanitizeURL(c.MCP.URL)),
 			slog.String("timeout", c.MCP.Timeout.String()),
+		),
+		slog.Group("ml_service",
+			slog.String("url", sanitizeURL(c.MLService.URL)),
+			slog.String("timeout", c.MLService.Timeout.String()),
+		),
+		slog.Group("access_service",
+			slog.String("url", sanitizeURL(c.AccessService.URL)),
+			slog.String("timeout", c.AccessService.Timeout.String()),
 		),
 	)
 }

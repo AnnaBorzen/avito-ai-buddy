@@ -8,7 +8,9 @@ RUN go mod download
 COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux GOTOOLCHAIN=local \
-    go build -trimpath -ldflags="-s -w" -o /app/server ./cmd/api
+    go build -trimpath -ldflags="-s -w" -o /app/server ./cmd/api && \
+    CGO_ENABLED=0 GOOS=linux GOTOOLCHAIN=local \
+    go build -trimpath -ldflags="-s -w" -o /app/access-service ./cmd/access
 
 # Runtime
 FROM alpine:3.22
@@ -18,6 +20,7 @@ RUN addgroup -S app && adduser -S -G app app
 WORKDIR /app
 
 COPY --from=builder /app/server ./server
+COPY --from=builder /app/access-service ./access-service
 
 USER app
 

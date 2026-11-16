@@ -1,14 +1,9 @@
 import { z } from 'zod'
 
-const dependencyCheckSchema = z.object({
-  status: z.string(),
-  error: z.string().optional(),
-})
-
 // Схема ответа GET /readyz — контракт описан в contracts/api.yaml.
 const readinessSchema = z.object({
-  status: z.string(),
-  checks: z.record(z.string(), dependencyCheckSchema),
+  status: z.enum(['ok', 'degraded']),
+  dependencies: z.record(z.enum(['ok', 'unavailable'])),
 })
 
 export type Readiness = z.infer<typeof readinessSchema>

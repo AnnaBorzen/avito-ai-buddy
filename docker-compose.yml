@@ -88,6 +88,36 @@ services:
       retries: 5
       start_period: 20s
 
+  access:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: buddy-access
+    restart: unless-stopped
+    command: ["./access-service"]
+
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-buddy}:${POSTGRES_PASSWORD:-buddy}@postgres:5432/${POSTGRES_DB:-buddy}?sslmode=disable
+      ACCESS_SERVICE_ADDR: ":8091"
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      LOG_FORMAT: ${LOG_FORMAT:-}
+      LOG_ADD_SOURCE: ${LOG_ADD_SOURCE:-false}
+
+    ports:
+      - "${ACCESS_SERVICE_PORT:-8091}:8091"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8091/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
   backend:
     build:
       context: ./backend
@@ -114,7 +144,10 @@ services:
       MCP_TIMEOUT: ${MCP_TIMEOUT:-10s}
       # ML-сервис агента: POST /v1/agent/turn (contracts/ml-api.yaml)
       ML_SERVICE_URL: http://ml:8090
-      ML_TIMEOUT: ${ML_TIMEOUT:-35s}
+      ML_SERVICE_TIMEOUT: ${ML_TIMEOUT:-35s}
+      # Сервис-имитация доступов: contracts/access-service.openapi.yaml
+      ACCESS_SERVICE_URL: http://access:8091
+      ACCESS_SERVICE_TIMEOUT: ${ACCESS_SERVICE_TIMEOUT:-10s}
 
     ports:
       - "${BACKEND_PORT:-8080}:8080"
@@ -125,6 +158,8 @@ services:
       redis:
         condition: service_healthy
       ml:
+        condition: service_healthy
+      access:
         condition: service_healthy
 
   frontend:

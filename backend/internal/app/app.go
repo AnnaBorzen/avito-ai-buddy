@@ -9,10 +9,17 @@ import (
 	"log/slog"
 	"net"
 	"net/http"
+	"net/url"
 	"runtime/debug"
 	"time"
 
 	"github.com/AnnaBorzen/avito-ai-buddy/backend/internal/config"
+	"github.com/AnnaBorzen/avito-ai-buddy/backend/internal/domain"
+	"github.com/AnnaBorzen/avito-ai-buddy/backend/internal/integration/access"
+	"github.com/AnnaBorzen/avito-ai-buddy/backend/internal/integration/ml"
+	"github.com/AnnaBorzen/avito-ai-buddy/backend/internal/service"
+	"github.com/AnnaBorzen/avito-ai-buddy/backend/internal/store"
+	apihttp "github.com/AnnaBorzen/avito-ai-buddy/backend/internal/transport/http"
 )
 
 const (
@@ -28,16 +35,15 @@ type dependency struct {
 	addr string
 }
 
-type checkResult struct {
-	Status string `json:"status"`
-	Error  string `json:"error,omitempty"`
-}
-
 // App — HTTP-приложение с внедрёнными конфигом и логгером.
 type App struct {
-	cfg config.Config
-	log *slog.Logger
-	srv *http.Server
+	cfg     config.Config
+	log     *slog.Logger
+	srv     *http.Server
+	mux     *http.ServeMux
+	seed    domain.Seed
+	seedErr error
+	store   *store.Store
 }
 
 // New собирает роутер и HTTP-сервер. Логгер приходит извне и используется
@@ -51,9 +57,17 @@ func New(cfg config.Config, log *slog.Logger) *App {
 	mux.Handle("GET /healthz", livenessHandler(log))
 	mux.Handle("GET /readyz", readinessHandler(log, dependencies(cfg)))
 
+	seed, seedErr := domain.NewSeed()
+	if seedErr != nil {
+		log.Error("invalid reference data", "error", seedErr)
+	}
+
 	return &App{
-		cfg: cfg,
-		log: log,
+		cfg:     cfg,
+		log:     log,
+		mux:     mux,
+		seed:    seed,
+		seedErr: seedErr,
 		srv: &http.Server{
 			Addr:              cfg.HTTP.Addr(),
 			Handler:           requestLogger(log, recoverPanic(log, mux)),
@@ -68,6 +82,13 @@ func New(cfg config.Config, log *slog.Logger) *App {
 // Слушающий сокет открывается до лога «server started», поэтому лог не врёт,
 // если порт уже занят.
 func (a *App) Run(ctx context.Context) error {
+	if err := a.init(ctx); err != nil {
+		return err
+	}
+	if a.store != nil {
+		defer a.store.Close()
+	}
+
 	listener, err := net.Listen("tcp", a.srv.Addr)
 	if err != nil {
 		return fmt.Errorf("http listen: %w", err)
@@ -106,7 +127,46 @@ func dependencies(cfg config.Config) []dependency {
 	return []dependency{
 		{name: "postgres", addr: cfg.Database.TCPAddr()},
 		{name: "redis", addr: cfg.Redis.Addr},
+		{name: "ml_service", addr: upstreamAddr(cfg.MLService.URL)},
+		{name: "access_service", addr: upstreamAddr(cfg.AccessService.URL)},
 	}
+}
+
+// init opens PostgreSQL and mounts the API. The service has no in-memory
+// fallback: without DATABASE_URL only health endpoints are exposed.
+func (a *App) init(ctx context.Context) error {
+	if a.cfg.Database.URL == "" {
+		a.log.Warn("DATABASE_URL is not set: API routes are disabled")
+		return nil
+	}
+	if a.seedErr != nil {
+		return fmt.Errorf("reference data: %w", a.seedErr)
+	}
+
+	st, err := store.Open(ctx, a.cfg.Database.URL)
+	if err != nil {
+		return err
+	}
+	a.store = st
+
+	mlClient := ml.New(a.cfg.MLService.URL, a.cfg.MLService.Timeout)
+	accessClient := access.New(a.cfg.AccessService.URL, a.cfg.AccessService.Timeout)
+	svc := service.New(st, a.seed, mlClient, accessClient, a.log)
+	apihttp.NewRouter(svc, a.seed, a.log).Register(a.mux)
+
+	a.log.Info("api routes registered", "prefix", "/api/v1")
+	return nil
+}
+
+func upstreamAddr(raw string) string {
+	if raw == "" {
+		return ""
+	}
+	parsed, err := url.Parse(raw)
+	if err != nil || parsed.Host == "" {
+		return ""
+	}
+	return parsed.Host
 }
 
 func livenessHandler(log *slog.Logger) http.Handler {
@@ -117,22 +177,21 @@ func livenessHandler(log *slog.Logger) http.Handler {
 
 func readinessHandler(log *slog.Logger, deps []dependency) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		checks := make(map[string]checkResult, len(deps))
+		dependencies := make(map[string]string, len(deps))
 		ready := true
 
 		for _, dep := range deps {
 			if dep.addr == "" {
-				checks[dep.name] = checkResult{Status: "skipped"}
 				continue
 			}
 
 			if err := dial(r.Context(), dep.addr); err != nil {
 				ready = false
-				checks[dep.name] = checkResult{Status: "error", Error: err.Error()}
+				dependencies[dep.name] = "unavailable"
 				continue
 			}
 
-			checks[dep.name] = checkResult{Status: "ok"}
+			dependencies[dep.name] = "ok"
 		}
 
 		status, state := http.StatusOK, "ok"
@@ -140,7 +199,7 @@ func readinessHandler(log *slog.Logger, deps []dependency) http.Handler {
 			status, state = http.StatusServiceUnavailable, "degraded"
 		}
 
-		writeJSON(log, w, status, map[string]any{"status": state, "checks": checks})
+		writeJSON(log, w, status, map[string]any{"status": state, "dependencies": dependencies})
 	})
 }
 
@@ -252,10 +311,8 @@ func recoverPanic(log *slog.Logger, next http.Handler) http.Handler {
 			)
 
 			writeJSON(log, w, http.StatusInternalServerError, map[string]any{
-				"error": map[string]string{
-					"code":    "INTERNAL_ERROR",
-					"message": "Внутренняя ошибка сервиса.",
-				},
+				"error_code": "INTERNAL_ERROR",
+				"message":    "Внутренняя ошибка сервиса.",
 			})
 		}()
 

@@ -2,11 +2,13 @@ package app
 
 import (
 	"context"
+	"encoding/json"
 	"io"
 	"log/slog"
 	"net"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -30,28 +32,32 @@ func TestLivenessHandler(t *testing.T) {
 
 func TestReadinessHandler(t *testing.T) {
 	tests := []struct {
-		name        string
-		deps        []dependency
-		wantStatus  int
-		wantPayload string
+		name             string
+		deps             []dependency
+		wantStatus       int
+		wantPayload      string
+		wantDependencies map[string]string
 	}{
 		{
-			name:        "checks are skipped when dependencies are not configured",
-			deps:        []dependency{{name: "postgres"}, {name: "redis"}},
-			wantStatus:  http.StatusOK,
-			wantPayload: `"status":"ok"`,
+			name:             "checks are skipped when dependencies are not configured",
+			deps:             []dependency{{name: "postgres"}, {name: "redis"}},
+			wantStatus:       http.StatusOK,
+			wantPayload:      `"status":"ok"`,
+			wantDependencies: map[string]string{},
 		},
 		{
-			name:        "reachable dependency",
-			deps:        []dependency{{name: "redis", addr: startTCPServer(t)}},
-			wantStatus:  http.StatusOK,
-			wantPayload: `"status":"ok"`,
+			name:             "reachable dependency",
+			deps:             []dependency{{name: "redis", addr: startTCPServer(t)}},
+			wantStatus:       http.StatusOK,
+			wantPayload:      `"status":"ok"`,
+			wantDependencies: map[string]string{"redis": "ok"},
 		},
 		{
-			name:        "unreachable dependency",
-			deps:        []dependency{{name: "redis", addr: "127.0.0.1:1"}},
-			wantStatus:  http.StatusServiceUnavailable,
-			wantPayload: `"status":"degraded"`,
+			name:             "unreachable dependency",
+			deps:             []dependency{{name: "redis", addr: "127.0.0.1:1"}},
+			wantStatus:       http.StatusServiceUnavailable,
+			wantPayload:      `"status":"degraded"`,
+			wantDependencies: map[string]string{"redis": "unavailable"},
 		},
 	}
 
@@ -68,6 +74,16 @@ func TestReadinessHandler(t *testing.T) {
 
 			if body := recorder.Body.String(); !strings.Contains(body, test.wantPayload) {
 				t.Fatalf("unexpected body: %q", body)
+			}
+
+			var body struct {
+				Dependencies map[string]string `json:"dependencies"`
+			}
+			if err := json.Unmarshal(recorder.Body.Bytes(), &body); err != nil {
+				t.Fatalf("body is not valid json: %v", err)
+			}
+			if !reflect.DeepEqual(body.Dependencies, test.wantDependencies) {
+				t.Fatalf("dependencies = %v, want %v", body.Dependencies, test.wantDependencies)
 			}
 		})
 	}

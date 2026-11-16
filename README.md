@@ -54,6 +54,7 @@ API не применяет миграции при старте: это отд�
 |---|---|
 | Frontend | http://localhost:5173 |
 | Backend | http://localhost:8080 |
+| Сервис-имитация доступов | http://localhost:8091 (внутренний контракт) |
 | ML-сервис (агент, RAG) | http://localhost:8090 |
 | PostgreSQL | localhost:5432 (buddy/buddy) |
 | Redis | localhost:6379 |
@@ -62,7 +63,7 @@ API не применяет миграции при старте: это отд�
 
 ```bash
 curl -fsS http://localhost:8080/healthz   # {"status":"ok"}
-curl -fsS http://localhost:8080/readyz    # статусы postgres и redis
+curl -fsS http://localhost:8080/readyz    # статусы настроенных зависимостей
 ```
 
 Остановка: `make down`; удалить вместе с volume — `make clean`.
@@ -78,7 +79,7 @@ curl -fsS http://localhost:8080/readyz    # статусы postgres и redis
 | Режим | Что работает | Как включить |
 |---|---|---|
 | Демо-макет | весь сценарий обслуживает middleware Vite (`frontend/server/*.mjs`, `node:sqlite`); данные лежат в `frontend/data/` | по умолчанию (`VITE_USE_MOCK_API` не равен `false`) |
-| Go backend | пока только `GET /healthz`, `GET /readyz`; бизнес-эндпоинты в разработке | `VITE_USE_MOCK_API=false`, backend на `:8080` |
+| Go backend | полный сценарий `contracts/api.yaml`: контекст, чат, подтверждение, сверка; PostgreSQL и отдельный сервис-имитация доступов обязательны | `VITE_USE_MOCK_API=false` и `DATABASE_URL` в окружении backend |
 
 Прокси `/api` в Vite не настроен: демо-макет отвечает сам, а целевой backend
 подключается тем же API-клиентом (`frontend/src/api/`) по абсолютному адресу из
@@ -131,7 +132,7 @@ make backend                                # http://localhost:8080
 | POST | `/api/v1/operations/{id}/reconcile` | сверка после `unknown` | api.yaml |
 | GET | `/api/v1/test-profiles` | профили для переключателя (расширение) | api.yaml |
 | GET | `/healthz` | liveness | api.yaml |
-| GET | `/readyz` | readiness (PostgreSQL, Redis) | api.yaml |
+| GET | `/readyz` | readiness (PostgreSQL, Redis, ML-сервис, access-service) | api.yaml |
 
 Ошибки — плоский JSON `{error_code, message, ...}`, каталог кодов —
 [`docs/architecture/04-error-model.md`](docs/architecture/04-error-model.md).
@@ -207,6 +208,29 @@ cd frontend && npm run test:coverage     # vitest + порог 81% строк + 
 | Безопасность | детектор prompt-injection, санитизация документов, проверка ответа на утечки и ложное «доступ выдан» |
 | MCP | [`ml/buddy_ml/mcp_server.py`](ml/buddy_ml/mcp_server.py), см. [`llm/mcp`](llm/mcp) |
 
+### Переменные окружения backend
+
+| Переменная | Назначение | По умолчанию |
+|---|---|---|
+| `DATABASE_URL` | PostgreSQL backend и access-service; без неё API не монтирует бизнес-роуты | — |
+| `REDIS_ADDR` | проверка готовности Redis (в бизнес-логике пока не используется) | — |
+| `ML_SERVICE_URL`, `ML_SERVICE_TIMEOUT` | адрес ML-сервиса и таймаут (больше `LLM_TIMEOUT`) | `http://ml:8090`, `35s` |
+| `ACCESS_SERVICE_URL`, `ACCESS_SERVICE_TIMEOUT` | адрес сервиса-имитации доступов и таймаут вызова | `http://access:8091`, `10s` |
+| `ACCESS_SERVICE_ADDR` | адрес прослушивания `cmd/access` | `:8091` |
+| `ACCESS_SERVICE_PORT` | публикуемый порт compose для сервиса доступов | `8091` |
+
+Интеграционные тесты backend выполняются на отдельной временной базе и по
+умолчанию пропускаются. Для запуска:
+
+```bash
+TEST_DATABASE_URL='postgres://buddy:buddy@localhost:55432/buddy?sslmode=disable' \
+  go test ./...
+```
+
+Тест создаёт `avito_test_*`, применяет `backend/migrations/*.up.sql` и удаляет
+базу после завершения. Пользователь `TEST_DATABASE_URL` должен иметь право
+создавать базы данных.
+
 ### Переменные окружения ML
 
 | Переменная | Назначение | По умолчанию |
@@ -220,7 +244,6 @@ cd frontend && npm run test:coverage     # vitest + порог 81% строк + 
 | `LLM_API_KEY` | ключ (не логируется, не попадает в `/readyz`) | — |
 | `LLM_MODEL` | модель, например `gpt-4o-mini` | — |
 | `LLM_TIMEOUT` | таймаут LLM; при превышении — локальный ответ | `30s` |
-| `ML_SERVICE_URL`, `ML_TIMEOUT` | для backend: адрес ML и таймаут (больше `LLM_TIMEOUT`) | `http://ml:8090`, `35s` |
 
 ### Проверка ML вручную
 
@@ -255,7 +278,7 @@ XML — `--cov-report=xml` (артефакт CI `ml-coverage-and-evals`).
 ## Структура репозитория
 
 ```text
-backend/              Go-сервис: cmd/api, Dockerfile, тесты
+backend/              Go-сервис: cmd/api, cmd/access, Dockerfile, тесты
 frontend/             React + TS: src/api, src/store, Vite proxy
 ml/                   ML-сервис: агент, RAG с ACL, NLU, guardrails, MCP, тесты, скрипты evals
 ml/knowledge/         база знаний: тестовые инструкции и чек-лист из материалов кейса
@@ -266,7 +289,7 @@ contracts/api.yaml    OpenAPI-контракт
 evals/                синтетические задания, эталоны, прогоны
 infra/                план Grafana / Kafka / Clickstream
 llm/                  промпты, скиллы, MCP
-docker-compose.yml    postgres + redis + ml + backend + frontend
+docker-compose.yml    postgres + redis + ml + backend + access + frontend
 ```
 
 ## Ограничения прототипа

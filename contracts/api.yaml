@@ -203,8 +203,11 @@ paths:
       operationId: getReadiness
       summary: Готовность сервиса и зависимостей
       description: |
-        Проверяет доступность зависимостей backend (БД). Возвращает 503, если
-        зависимость недоступна. Расширение (не в §10 ТЗ).
+        Проверяет TCP-доступность настроенных зависимостей backend: PostgreSQL,
+        Redis, ML-сервиса и сервиса доступов. Зависимость без адреса в
+        конфигурации пропускается. `dependencies` содержит только проверенные
+        зависимости со статусом `ok` или `unavailable`; 503 возвращается, если
+        хотя бы одна из них недоступна. Расширение (не в §10 ТЗ).
       responses:
         "200":
           description: Все настроенные зависимости доступны
@@ -342,8 +345,8 @@ components:
                 error_code: DRAFT_VERSION_CONFLICT
                 message: "Черновик изменён: актуальная версия 2, в запросе 1."
                 details:
-                  current_draft_version: 2
-                  requested_draft_version: 1
+                  expected: 2
+                  actual: 1
     UpstreamError:
       description: |
         Сервис доступов недоступен или ответил ошибкой. Операция переходит в

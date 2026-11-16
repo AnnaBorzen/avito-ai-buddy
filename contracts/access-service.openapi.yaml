@@ -19,8 +19,8 @@ info:
       * эндпоинты `/internal/*` не публикуются наружу и не описаны в §10 ТЗ
         (это внутренняя граница прототипа, см. `docs/architecture/02-services.md`).
 servers:
-  - url: http://localhost:8081
-    description: Локальный сервис-имитация
+  - url: http://localhost:8091
+    description: Локальный сервис-имитация (backend/cmd/access)
 tags:
   - name: access-requests
     description: Создание заявки и чтение её состояния
@@ -145,7 +145,7 @@ components:
       description: |
         Данные заявки. `user_id`, `team_id`, `approver_id` подставляет backend из
         серверного контекста — они не могут прийти из чата или от LLM.
-      required: [operation_id, user_id, team_id, resource_id, access_level, justification, approver_id]
+      required: [operation_id, user_id, team_id, resource_id, access_level, justification, approver_id, approver_name]
       properties:
         operation_id:
           type: string
@@ -172,6 +172,9 @@ components:
         approver_id:
           type: string
           description: Тимлид команды пользователя (справочник команд, не выбор пользователя).
+        approver_name:
+          type: string
+          description: Отображаемое имя согласующего, полученное backend из справочника.
 
     TicketStatus:
       type: string
