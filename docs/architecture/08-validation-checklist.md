@@ -42,8 +42,6 @@
 |---|---|---|---|
 | 1 | Демо-макет пишет события с полями `event_name`, `time`, `version` вместо `event`, `occurred_at`, `scenario_version` | `frontend/server/service.mjs` | приведение к `docs/metrics.md` §3 |
 | 2 | Бизнес-эндпоинты обслуживает middleware Vite, а не Go backend | `frontend/server/http.mjs` | реализация `backend/internal` по контракту |
-| 3 | `tsc --noEmit` не проходит на текущем фронтенде | `frontend/` | отдельная задача по типам |
-| 4 | CI не запускает `npm run typecheck` | `.github/workflows/*` | добавить шаг |
 
 Расхождения фиксируются здесь, а не раскидываются по PRD: это единый список
 технического долга прототипа.

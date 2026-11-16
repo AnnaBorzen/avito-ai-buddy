@@ -33,7 +33,7 @@ MVP — один глубоко проработанный сценарий: **�
 | Демо-API | Vite middleware + `node:sqlite` (`frontend/server/`) |
 | Тесты фронтенда | Vitest + Testing Library (порог покрытия 81% строк) |
 | Backend | Go 1.26, `net/http`, `log/slog`, `koanf` (env-конфиг) |
-| Frontend | React 19, TypeScript, Vite, TanStack Query, Zustand, Zod |
+| Frontend | React 18, TypeScript, Vite |
 | ML-сервис | Python 3.12, Flask + gunicorn, scikit-learn, snowball-стемминг; опц. sentence-transformers, MCP SDK |
 | Данные | PostgreSQL 17, Redis 7.4 |
 | Инфраструктура | Docker, Docker Compose, GitHub Actions |
@@ -180,6 +180,7 @@ make test        # backend: go test ./... -coverprofile=coverage.out
 make coverage    # backend: go tool cover -func=coverage.out
 make lint        # go vet + gofmt check
 make check       # lint + test + typecheck/build фронтенда
+cd frontend && npm run typecheck         # tsc --noEmit
 cd frontend && npm test                  # vitest run
 cd frontend && npm run test:coverage     # vitest + порог 81% строк + сводка
 ```
