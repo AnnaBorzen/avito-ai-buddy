@@ -1,0 +1,6 @@
+.venv/
+data/external/
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/

@@ -1,0 +1,67 @@
+{"id": "r01", "query": "какие три параметра указать при подаче заявки", "relevant": ["doc_01_onboarding_access"], "section": "Какие параметры"}
+{"id": "r02", "query": "через сколько тимлид рассмотрит мой запрос", "relevant": ["doc_01_onboarding_access"], "section": "Как происходит согласование"}
+{"id": "r03", "query": "зачем стажёру на старте доступ к вики команды", "relevant": ["doc_01_onboarding_access"], "section": "Зачем нужен"}
+{"id": "r04", "query": "чем заняться, пока заявка висит в pending", "relevant": ["doc_01_onboarding_access"], "section": "Как происходит согласование"}
+{"id": "r05", "query": "значит ли созданная заявка, что права уже есть", "relevant": ["doc_01_onboarding_access"], "section": "Как происходит согласование"}
+{"id": "r06", "query": "можно ли мне писать в пространство соседней команды", "relevant": ["doc_02_security_restrictions"], "section": "Матрица"}
+{"id": "r07", "query": "доступ к промышленной базе данных для стажёра", "relevant": ["doc_02_security_restrictions"], "section": "Матрица"}
+{"id": "r08", "query": "нужна выгрузка из прода, куда идти", "relevant": ["doc_02_security_restrictions"], "section": "Действия при блокировке"}
+{"id": "r09", "query": "обезличенный дамп данных", "relevant": ["doc_02_security_restrictions"], "section": "Действия при блокировке"}
+{"id": "r10", "query": "уровень write что позволяет", "relevant": ["doc_01_onboarding_access"], "section": "Какие параметры"}
+{"id": "r11", "query": "что писать в обосновании justification", "relevant": ["doc_01_onboarding_access"], "section": "Какие параметры"}
+{"id": "r12", "query": "space_goods_search_wiki запрос на запись", "relevant": ["doc_02_security_restrictions"], "section": "Матрица"}
+{"id": "r13", "query": "кто назначается согласующим заявки", "relevant": ["doc_01_onboarding_access"], "section": "Как происходит согласование"}
+{"id": "r14", "query": "финансовые контуры ограничения стажёров", "relevant": ["doc_02_security_restrictions"], "section": "Матрица"}
+{"id": "r15", "query": "учебный репозиторий песочница первой недели", "relevant": ["doc_01_onboarding_access", "doc_05_backend_checklist"]}
+{"id": "r16", "query": "с кем знакомиться в первую неделю", "relevant": ["doc_04_intern_checklist"]}
+{"id": "r17", "query": "конспект встреч с наставником", "relevant": ["doc_04_intern_checklist"]}
+{"id": "r18", "query": "инструмент отслеживания прогресса стажёра у куратора", "relevant": ["doc_04_intern_checklist"]}
+{"id": "r19", "query": "защита персональных данных памятка о раскрытии информации", "relevant": ["doc_04_intern_checklist"]}
+{"id": "r20", "query": "как готовиться к экватору и презентации промежуточных результатов", "relevant": ["doc_04_intern_checklist"]}
+{"id": "r21", "query": "настройка avito-cli и ключей в stash", "relevant": ["doc_05_backend_checklist"]}
+{"id": "r22", "query": "какой сниффер запросов установить для работы с kubernetes", "relevant": ["doc_05_backend_checklist"]}
+{"id": "r23", "query": "канал tech-dep кто добавит", "relevant": ["doc_05_backend_checklist"]}
+{"id": "r24", "query": "какие книги по go почитать", "relevant": ["doc_05_backend_checklist", "playbook_books"]}
+{"id": "r25", "query": "курс по микросервисной архитектуре", "relevant": ["doc_05_backend_checklist"]}
+{"id": "r26", "query": "нагрузочное тестирование документация", "relevant": ["doc_05_backend_checklist"]}
+{"id": "r27", "query": "процесс шаталити планирование работ", "relevant": ["doc_05_backend_checklist"]}
+{"id": "r28", "query": "сообщества в центре сообществ", "relevant": ["doc_05_backend_checklist"]}
+{"id": "r29", "query": "как обрабатываются обращения пользователей из helpdesk", "relevant": ["playbook_spt"]}
+{"id": "r30", "query": "приоритеты задач support в jira", "relevant": ["playbook_spt"]}
+{"id": "r31", "query": "миссия и ценности компании", "relevant": ["playbook_mission-and-values"]}
+{"id": "r32", "query": "главная ценность — потребности пользователей", "relevant": ["playbook_mission-and-values"]}
+{"id": "r33", "query": "чем занимается tech lead и team lead", "relevant": ["playbook_techlead-profile"]}
+{"id": "r34", "query": "карьерная лестница инженеров E1 E2 E3", "relevant": ["playbook_developer-profile"]}
+{"id": "r35", "query": "что ожидается от инженера уровня E3", "relevant": ["playbook_developer-profile"]}
+{"id": "r36", "query": "зачем разработчикам платформа PaaS", "relevant": ["playbook_avito-paas"]}
+{"id": "r37", "query": "когда стоит делать tech design review", "relevant": ["playbook_tech_design_review"]}
+{"id": "r38", "query": "шаблон описания изменений архитектуры для ревью коллегами", "relevant": ["playbook_tech_design_review"]}
+{"id": "r39", "query": "как вносить изменения в чужой сервис", "relevant": ["playbook_neighborhood-agreement"]}
+{"id": "r40", "query": "ответственность владельца функционала при чужих изменениях", "relevant": ["playbook_neighborhood-agreement"]}
+{"id": "r41", "query": "бюджет на конференции и курсы", "relevant": ["playbook_training-and-development"]}
+{"id": "r42", "query": "есть ли корпоративная библиотека", "relevant": ["playbook_training-and-development"]}
+{"id": "r43", "query": "этапы собеседования инженера", "relevant": ["playbook_recruitment-and-office"]}
+{"id": "r44", "query": "как устроены кластеры и юниты", "relevant": ["playbook_structure"]}
+{"id": "r45", "query": "роль unit leader", "relevant": ["playbook_structure"]}
+{"id": "r46", "query": "как проходит performance review", "relevant": ["playbook_goal-setting"]}
+{"id": "r47", "query": "цели по OKR как ставятся", "relevant": ["playbook_goal-setting"]}
+{"id": "r48", "query": "live site review разбор инцидентов", "relevant": ["playbook_avito-developer-practice"]}
+{"id": "r49", "query": "архитектурный комитет когда обращаться", "relevant": ["playbook_avito-developer-practice"]}
+{"id": "r50", "query": "как устроены релизы и scrum в командах", "relevant": ["playbook_processes-and-standards"]}
+{"id": "r51", "query": "какие ноутбуки и рабочие инструменты выдают", "relevant": ["playbook_processes-and-standards"]}
+{"id": "r52", "query": "принципы проектирования интерфейсов сервисов", "relevant": ["playbook_development-principles"]}
+{"id": "r53", "query": "принцип: что не протестировано, то не работает", "relevant": ["playbook_development-principles"]}
+{"id": "r54", "query": "стажировки и магистратура для студентов", "relevant": ["playbook_students"]}
+{"id": "r55", "query": "когда основали авито, история компании", "relevant": ["playbook_avito-history"]}
+{"id": "r56", "query": "открытые проекты авито на github", "relevant": ["playbook_avito-open-source"]}
+{"id": "r57", "query": "компетенции data scientist джуна", "relevant": ["playbook_ds-skills"]}
+{"id": "r58", "query": "профиль QA инженера", "relevant": ["playbook_QA-profile"]}
+{"id": "r59", "query": "лимит лицензий кластера auto и внутренний sla тимлидов", "relevant": [], "forbidden": ["doc_03_lead_internal_policy"]}
+{"id": "r60", "query": "внутренний чек-лист руководителя по аппруву заявок", "relevant": [], "forbidden": ["doc_03_lead_internal_policy"]}
+{"id": "r61", "query": "как наставнику проверить презентацию стажёра к экватору", "relevant": [], "forbidden": ["doc_06_mentor_checklist"]}
+{"id": "r62", "query": "срок сагласования заявки тимлидом", "relevant": ["doc_01_onboarding_access"], "tags": ["typo"]}
+{"id": "r63", "query": "абезличеный дамп из прода", "relevant": ["doc_02_security_restrictions"], "tags": ["typo"]}
+{"id": "r64", "query": "принцыпы разработки в авито", "relevant": ["playbook_development-principles", "doc_05_backend_checklist"], "tags": ["typo"]}
+{"id": "r65", "query": "тех дизайн ревю шаблон", "relevant": ["playbook_tech_design_review"], "tags": ["typo"]}
+{"id": "r66", "query": "обращения пользователей хелпдеск приоритеты", "relevant": ["playbook_spt"], "tags": ["typo"]}
+{"id": "r67", "query": "настроить авито-cli", "relevant": ["doc_05_backend_checklist"], "tags": ["typo"]}

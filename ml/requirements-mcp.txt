@@ -1,0 +1,3 @@
+# Опционально: MCP-сервер инструментов (python -m buddy_ml.mcp_server)
+-r requirements.txt
+mcp==2.3.0

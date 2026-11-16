@@ -1,0 +1,6821 @@
+{
+  "chunks": 680,
+  "documents": 33,
+  "summary": {
+    "bm25": {
+      "queries": 64,
+      "recall@1": 0.8906,
+      "recall@3": 0.9531,
+      "mrr@5": 0.9219,
+      "acl_leaks": 0,
+      "index_build_s": 1.06,
+      "query_ms": 1.4
+    },
+    "tfidf": {
+      "queries": 64,
+      "recall@1": 0.7969,
+      "recall@3": 0.9219,
+      "mrr@5": 0.8503,
+      "acl_leaks": 0,
+      "index_build_s": 0.84,
+      "query_ms": 12.6
+    },
+    "bm25+tfidf": {
+      "queries": 64,
+      "recall@1": 0.875,
+      "recall@3": 0.9531,
+      "mrr@5": 0.9141,
+      "acl_leaks": 0,
+      "index_build_s": 1.43,
+      "query_ms": 12.2
+    },
+    "dense[cointegrated/rubert-tiny2]": {
+      "queries": 64,
+      "recall@1": 0.4062,
+      "recall@3": 0.6094,
+      "mrr@5": 0.5203,
+      "acl_leaks": 0,
+      "index_build_s": 9.16,
+      "query_ms": 8.0
+    },
+    "bm25+dense[cointegrated/rubert-tiny2]": {
+      "queries": 64,
+      "recall@1": 0.7969,
+      "recall@3": 0.9062,
+      "mrr@5": 0.8482,
+      "acl_leaks": 0,
+      "index_build_s": 8.57,
+      "query_ms": 9.2
+    },
+    "bm25+tfidf+dense[cointegrated/rubert-tiny2]": {
+      "queries": 64,
+      "recall@1": 0.7656,
+      "recall@3": 0.9375,
+      "mrr@5": 0.8443,
+      "acl_leaks": 0,
+      "index_build_s": 8.3,
+      "query_ms": 19.0
+    },
+    "dense[intfloat/multilingual-e5-small]": {
+      "queries": 64,
+      "recall@1": 0.7969,
+      "recall@3": 0.8594,
+      "mrr@5": 0.8326,
+      "acl_leaks": 0,
+      "index_build_s": 49.63,
+      "query_ms": 30.4
+    },
+    "bm25+dense[intfloat/multilingual-e5-small]": {
+      "queries": 64,
+      "recall@1": 0.8438,
+      "recall@3": 0.9062,
+      "mrr@5": 0.8833,
+      "acl_leaks": 0,
+      "index_build_s": 48.7,
+      "query_ms": 26.5
+    },
+    "bm25+tfidf+dense[intfloat/multilingual-e5-small]": {
+      "queries": 64,
+      "recall@1": 0.8438,
+      "recall@3": 0.9531,
+      "mrr@5": 0.8945,
+      "acl_leaks": 0,
+      "index_build_s": 51.0,
+      "query_ms": 38.6
+    }
+  },
+  "details": {
+    "bm25": {
+      "queries": 64,
+      "recall@1": 0.8906,
+      "recall@3": 0.9531,
+      "mrr@5": 0.9219,
+      "acl_leaks": 0,
+      "per_query": [
+        {
+          "id": "r01",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.926,
+          "leaked": []
+        },
+        {
+          "id": "r02",
+          "rank": null,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_design-management",
+            "playbook_design-management"
+          ],
+          "confidence": 0.393,
+          "leaked": []
+        },
+        {
+          "id": "r03",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 0.492,
+          "leaked": []
+        },
+        {
+          "id": "r04",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_avito-history"
+          ],
+          "confidence": 0.596,
+          "leaked": []
+        },
+        {
+          "id": "r05",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.553,
+          "leaked": []
+        },
+        {
+          "id": "r06",
+          "rank": 2,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_02_security_restrictions",
+            "playbook_design-management"
+          ],
+          "confidence": 0.412,
+          "leaked": []
+        },
+        {
+          "id": "r07",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r08",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_neighborhood-agreement",
+            "playbook_design-management"
+          ],
+          "confidence": 0.256,
+          "leaked": []
+        },
+        {
+          "id": "r09",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_development-principles",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r10",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.674,
+          "leaked": []
+        },
+        {
+          "id": "r11",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_avito-paas",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.727,
+          "leaked": []
+        },
+        {
+          "id": "r12",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_04_intern_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.62,
+          "leaked": []
+        },
+        {
+          "id": "r13",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_spt"
+          ],
+          "confidence": 0.766,
+          "leaked": []
+        },
+        {
+          "id": "r14",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "playbook_product-levels"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r15",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r16",
+          "rank": null,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.385,
+          "leaked": []
+        },
+        {
+          "id": "r17",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_01_onboarding_access",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r18",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r19",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r20",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_techlead-profile",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.829,
+          "leaked": []
+        },
+        {
+          "id": "r21",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist",
+            "playbook_avito-paas"
+          ],
+          "confidence": 0.424,
+          "leaked": []
+        },
+        {
+          "id": "r22",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-history",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r23",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-open-source",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r24",
+          "rank": 1,
+          "top": [
+            "playbook_books",
+            "playbook_books",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r25",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_training-and-development",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r26",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_developer-profile",
+            "playbook_ds-skills"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r27",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_ds-managers-profiles",
+            "playbook_design-management"
+          ],
+          "confidence": 0.757,
+          "leaked": []
+        },
+        {
+          "id": "r28",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_developer-profile",
+            "playbook_design-management"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r29",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 0.7,
+          "leaked": []
+        },
+        {
+          "id": "r30",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_spt"
+          ],
+          "confidence": 0.677,
+          "leaked": []
+        },
+        {
+          "id": "r31",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_mission-and-values",
+            "playbook_mission-and-values"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r32",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_design-management",
+            "playbook_mission-and-values"
+          ],
+          "confidence": 0.779,
+          "leaked": []
+        },
+        {
+          "id": "r33",
+          "rank": 1,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_ds-managers-profiles",
+            "playbook_design-management"
+          ],
+          "confidence": 0.736,
+          "leaked": []
+        },
+        {
+          "id": "r34",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_developer-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r35",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_developer-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 0.782,
+          "leaked": []
+        },
+        {
+          "id": "r36",
+          "rank": 1,
+          "top": [
+            "playbook_avito-paas",
+            "playbook_avito-paas",
+            "playbook_avito-paas"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r37",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_tech_design_review",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r38",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_ds-skills",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 0.747,
+          "leaked": []
+        },
+        {
+          "id": "r39",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_development-principles",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.821,
+          "leaked": []
+        },
+        {
+          "id": "r40",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.888,
+          "leaked": []
+        },
+        {
+          "id": "r41",
+          "rank": 1,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_recruitment-and-office",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r42",
+          "rank": 2,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_training-and-development",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r43",
+          "rank": 1,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r44",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_design-management",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.732,
+          "leaked": []
+        },
+        {
+          "id": "r45",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_structure",
+            "playbook_structure"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r46",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_techlead-profile",
+            "playbook_goal-setting"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r47",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_goal-setting",
+            "playbook_ds-managers-profiles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r48",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r49",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 0.658,
+          "leaked": []
+        },
+        {
+          "id": "r50",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "doc_05_backend_checklist",
+            "playbook_processes-and-standards"
+          ],
+          "confidence": 0.41,
+          "leaked": []
+        },
+        {
+          "id": "r51",
+          "rank": 2,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_processes-and-standards",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.885,
+          "leaked": []
+        },
+        {
+          "id": "r52",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.723,
+          "leaked": []
+        },
+        {
+          "id": "r53",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r54",
+          "rank": 1,
+          "top": [
+            "playbook_students",
+            "playbook_students",
+            "playbook_students"
+          ],
+          "confidence": 0.74,
+          "leaked": []
+        },
+        {
+          "id": "r55",
+          "rank": 1,
+          "top": [
+            "playbook_avito-history",
+            "playbook_avito-history",
+            "playbook_avito-history"
+          ],
+          "confidence": 0.557,
+          "leaked": []
+        },
+        {
+          "id": "r56",
+          "rank": 2,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_avito-open-source",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r57",
+          "rank": null,
+          "top": [
+            "playbook_books",
+            "playbook_analytics-management",
+            "playbook_analytics-management"
+          ],
+          "confidence": 0.33,
+          "leaked": []
+        },
+        {
+          "id": "r58",
+          "rank": 1,
+          "top": [
+            "playbook_QA-profile",
+            "playbook_developer-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r59",
+          "rank": null,
+          "top": [
+            "playbook_ds-skills",
+            "playbook_techlead-profile",
+            "playbook_design-management"
+          ],
+          "confidence": 0.257,
+          "leaked": []
+        },
+        {
+          "id": "r60",
+          "rank": null,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_04_intern_checklist",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 0.325,
+          "leaked": []
+        },
+        {
+          "id": "r61",
+          "rank": null,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.624,
+          "leaked": []
+        },
+        {
+          "id": "r62",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.466,
+          "leaked": []
+        },
+        {
+          "id": "r63",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_design-management",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.391,
+          "leaked": []
+        },
+        {
+          "id": "r64",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_structure",
+            "playbook_avito-paas"
+          ],
+          "confidence": 0.38,
+          "leaked": []
+        },
+        {
+          "id": "r65",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_design-management",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 0.778,
+          "leaked": []
+        },
+        {
+          "id": "r66",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_spt"
+          ],
+          "confidence": 0.619,
+          "leaked": []
+        },
+        {
+          "id": "r67",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_design-management",
+            "playbook_avito-history"
+          ],
+          "confidence": 0.451,
+          "leaked": []
+        }
+      ],
+      "index_build_s": 1.06,
+      "query_ms": 1.4
+    },
+    "tfidf": {
+      "queries": 64,
+      "recall@1": 0.7969,
+      "recall@3": 0.9219,
+      "mrr@5": 0.8503,
+      "acl_leaks": 0,
+      "per_query": [
+        {
+          "id": "r01",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.926,
+          "leaked": []
+        },
+        {
+          "id": "r02",
+          "rank": null,
+          "top": [
+            "playbook_design-management",
+            "playbook_design-management",
+            "playbook_design-management"
+          ],
+          "confidence": 0.226,
+          "leaked": []
+        },
+        {
+          "id": "r03",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.492,
+          "leaked": []
+        },
+        {
+          "id": "r04",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_developer-profile"
+          ],
+          "confidence": 0.596,
+          "leaked": []
+        },
+        {
+          "id": "r05",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.553,
+          "leaked": []
+        },
+        {
+          "id": "r06",
+          "rank": 3,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_avito-paas",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 0.382,
+          "leaked": []
+        },
+        {
+          "id": "r07",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r08",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_product-levels",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 0.256,
+          "leaked": []
+        },
+        {
+          "id": "r09",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_development-principles",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r10",
+          "rank": null,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_design-management",
+            "playbook_developer-profile"
+          ],
+          "confidence": 0.57,
+          "leaked": []
+        },
+        {
+          "id": "r11",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_04_intern_checklist",
+            "playbook_avito-paas"
+          ],
+          "confidence": 0.727,
+          "leaked": []
+        },
+        {
+          "id": "r12",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.62,
+          "leaked": []
+        },
+        {
+          "id": "r13",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_ds-skills",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.766,
+          "leaked": []
+        },
+        {
+          "id": "r14",
+          "rank": 3,
+          "top": [
+            "playbook_product-levels",
+            "playbook_product-levels",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r15",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r16",
+          "rank": 2,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_04_intern_checklist",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 0.209,
+          "leaked": []
+        },
+        {
+          "id": "r17",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_developer-profile",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r18",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_product-levels",
+            "playbook_product-levels"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r19",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r20",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.829,
+          "leaked": []
+        },
+        {
+          "id": "r21",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.424,
+          "leaked": []
+        },
+        {
+          "id": "r22",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-history",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r23",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_04_intern_checklist",
+            "playbook_spt"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r24",
+          "rank": 1,
+          "top": [
+            "playbook_books",
+            "playbook_avito-paas",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r25",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_developer-profile",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r26",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_ds-skills",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r27",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_ds-managers-profiles",
+            "playbook_ds-managers-profiles"
+          ],
+          "confidence": 0.757,
+          "leaked": []
+        },
+        {
+          "id": "r28",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_developer-profile",
+            "playbook_ds-skills"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r29",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 0.7,
+          "leaked": []
+        },
+        {
+          "id": "r30",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_bi-developers",
+            "playbook_spt"
+          ],
+          "confidence": 0.677,
+          "leaked": []
+        },
+        {
+          "id": "r31",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_mission-and-values",
+            "playbook_mission-and-values"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r32",
+          "rank": 3,
+          "top": [
+            "playbook_design-management",
+            "playbook_developer-profile",
+            "playbook_mission-and-values"
+          ],
+          "confidence": 0.779,
+          "leaked": []
+        },
+        {
+          "id": "r33",
+          "rank": null,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_bi-developers",
+            "playbook_analytics-management"
+          ],
+          "confidence": 0.487,
+          "leaked": []
+        },
+        {
+          "id": "r34",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_QA-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r35",
+          "rank": 2,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_developer-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 0.782,
+          "leaked": []
+        },
+        {
+          "id": "r36",
+          "rank": 1,
+          "top": [
+            "playbook_avito-paas",
+            "playbook_avito-paas",
+            "playbook_avito-paas"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r37",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_tech_design_review",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r38",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_avito-developer-practice",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.747,
+          "leaked": []
+        },
+        {
+          "id": "r39",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_design-levels",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.821,
+          "leaked": []
+        },
+        {
+          "id": "r40",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.888,
+          "leaked": []
+        },
+        {
+          "id": "r41",
+          "rank": 1,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_developer-profile",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r42",
+          "rank": 2,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_training-and-development",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r43",
+          "rank": 1,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r44",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_recruitment-and-office",
+            "playbook_design-management"
+          ],
+          "confidence": 0.732,
+          "leaked": []
+        },
+        {
+          "id": "r45",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r46",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_goal-setting",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r47",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_design-management",
+            "playbook_goal-setting"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r48",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r49",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 0.658,
+          "leaked": []
+        },
+        {
+          "id": "r50",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "playbook_processes-and-standards",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.41,
+          "leaked": []
+        },
+        {
+          "id": "r51",
+          "rank": 4,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_design-levels",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.885,
+          "leaked": []
+        },
+        {
+          "id": "r52",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.723,
+          "leaked": []
+        },
+        {
+          "id": "r53",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r54",
+          "rank": 1,
+          "top": [
+            "playbook_students",
+            "playbook_students",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.74,
+          "leaked": []
+        },
+        {
+          "id": "r55",
+          "rank": 1,
+          "top": [
+            "playbook_avito-history",
+            "playbook_avito-history",
+            "playbook_avito-history"
+          ],
+          "confidence": 0.557,
+          "leaked": []
+        },
+        {
+          "id": "r56",
+          "rank": 1,
+          "top": [
+            "playbook_avito-open-source",
+            "playbook_avito-open-source",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r57",
+          "rank": null,
+          "top": [
+            "playbook_books",
+            "playbook_students",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.251,
+          "leaked": []
+        },
+        {
+          "id": "r58",
+          "rank": 3,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_developer-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r59",
+          "rank": null,
+          "top": [
+            "playbook_design-management",
+            "playbook_techlead-profile",
+            "playbook_design-management"
+          ],
+          "confidence": 0.205,
+          "leaked": []
+        },
+        {
+          "id": "r60",
+          "rank": null,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_01_onboarding_access",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.325,
+          "leaked": []
+        },
+        {
+          "id": "r61",
+          "rank": null,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.624,
+          "leaked": []
+        },
+        {
+          "id": "r62",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.466,
+          "leaked": []
+        },
+        {
+          "id": "r63",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_bi-developers",
+            "playbook_design-management"
+          ],
+          "confidence": 0.391,
+          "leaked": []
+        },
+        {
+          "id": "r64",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.38,
+          "leaked": []
+        },
+        {
+          "id": "r65",
+          "rank": 3,
+          "top": [
+            "playbook_ds-skills",
+            "playbook_ds-skills",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 0.778,
+          "leaked": []
+        },
+        {
+          "id": "r66",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_spt"
+          ],
+          "confidence": 0.619,
+          "leaked": []
+        },
+        {
+          "id": "r67",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_design-levels",
+            "playbook_processes-and-standards"
+          ],
+          "confidence": 0.451,
+          "leaked": []
+        }
+      ],
+      "index_build_s": 0.84,
+      "query_ms": 12.6
+    },
+    "bm25+tfidf": {
+      "queries": 64,
+      "recall@1": 0.875,
+      "recall@3": 0.9531,
+      "mrr@5": 0.9141,
+      "acl_leaks": 0,
+      "per_query": [
+        {
+          "id": "r01",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.926,
+          "leaked": []
+        },
+        {
+          "id": "r02",
+          "rank": null,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_design-management",
+            "playbook_design-management"
+          ],
+          "confidence": 0.226,
+          "leaked": []
+        },
+        {
+          "id": "r03",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 0.492,
+          "leaked": []
+        },
+        {
+          "id": "r04",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.596,
+          "leaked": []
+        },
+        {
+          "id": "r05",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.553,
+          "leaked": []
+        },
+        {
+          "id": "r06",
+          "rank": 2,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_02_security_restrictions",
+            "playbook_design-management"
+          ],
+          "confidence": 0.412,
+          "leaked": []
+        },
+        {
+          "id": "r07",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r08",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_neighborhood-agreement",
+            "playbook_design-management"
+          ],
+          "confidence": 0.256,
+          "leaked": []
+        },
+        {
+          "id": "r09",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_bi-developers",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r10",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 0.674,
+          "leaked": []
+        },
+        {
+          "id": "r11",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_avito-paas",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.727,
+          "leaked": []
+        },
+        {
+          "id": "r12",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_04_intern_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.62,
+          "leaked": []
+        },
+        {
+          "id": "r13",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.766,
+          "leaked": []
+        },
+        {
+          "id": "r14",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "playbook_product-levels"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r15",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r16",
+          "rank": null,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.385,
+          "leaked": []
+        },
+        {
+          "id": "r17",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_developer-profile",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r18",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r19",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r20",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.829,
+          "leaked": []
+        },
+        {
+          "id": "r21",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 0.424,
+          "leaked": []
+        },
+        {
+          "id": "r22",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-history",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r23",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_spt",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r24",
+          "rank": 1,
+          "top": [
+            "playbook_books",
+            "playbook_books",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r25",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_training-and-development",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r26",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_developer-profile",
+            "playbook_ds-skills"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r27",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_ds-managers-profiles",
+            "playbook_design-management"
+          ],
+          "confidence": 0.757,
+          "leaked": []
+        },
+        {
+          "id": "r28",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_developer-profile",
+            "playbook_design-management"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r29",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 0.7,
+          "leaked": []
+        },
+        {
+          "id": "r30",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_spt"
+          ],
+          "confidence": 0.677,
+          "leaked": []
+        },
+        {
+          "id": "r31",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_mission-and-values",
+            "playbook_mission-and-values"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r32",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_design-management",
+            "playbook_mission-and-values"
+          ],
+          "confidence": 0.779,
+          "leaked": []
+        },
+        {
+          "id": "r33",
+          "rank": 1,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_design-management",
+            "playbook_ds-managers-profiles"
+          ],
+          "confidence": 0.736,
+          "leaked": []
+        },
+        {
+          "id": "r34",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_developer-profile",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r35",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_QA-profile",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.782,
+          "leaked": []
+        },
+        {
+          "id": "r36",
+          "rank": 1,
+          "top": [
+            "playbook_avito-paas",
+            "playbook_avito-paas",
+            "playbook_avito-paas"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r37",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_tech_design_review",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r38",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_ds-skills",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 0.747,
+          "leaked": []
+        },
+        {
+          "id": "r39",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_development-principles",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.821,
+          "leaked": []
+        },
+        {
+          "id": "r40",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.888,
+          "leaked": []
+        },
+        {
+          "id": "r41",
+          "rank": 1,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_recruitment-and-office",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r42",
+          "rank": 2,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_training-and-development",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r43",
+          "rank": 1,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r44",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_design-management",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 0.732,
+          "leaked": []
+        },
+        {
+          "id": "r45",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_structure",
+            "playbook_structure"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r46",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_techlead-profile",
+            "playbook_goal-setting"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r47",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_goal-setting",
+            "playbook_design-management"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r48",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r49",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 0.658,
+          "leaked": []
+        },
+        {
+          "id": "r50",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "doc_05_backend_checklist",
+            "playbook_processes-and-standards"
+          ],
+          "confidence": 0.41,
+          "leaked": []
+        },
+        {
+          "id": "r51",
+          "rank": 2,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_processes-and-standards",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.885,
+          "leaked": []
+        },
+        {
+          "id": "r52",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.723,
+          "leaked": []
+        },
+        {
+          "id": "r53",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r54",
+          "rank": 1,
+          "top": [
+            "playbook_students",
+            "playbook_students",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.74,
+          "leaked": []
+        },
+        {
+          "id": "r55",
+          "rank": 1,
+          "top": [
+            "playbook_avito-history",
+            "playbook_avito-history",
+            "playbook_avito-history"
+          ],
+          "confidence": 0.557,
+          "leaked": []
+        },
+        {
+          "id": "r56",
+          "rank": 2,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_avito-open-source",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r57",
+          "rank": null,
+          "top": [
+            "playbook_books",
+            "playbook_students",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.33,
+          "leaked": []
+        },
+        {
+          "id": "r58",
+          "rank": 2,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_QA-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r59",
+          "rank": null,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_ds-skills",
+            "playbook_design-management"
+          ],
+          "confidence": 0.257,
+          "leaked": []
+        },
+        {
+          "id": "r60",
+          "rank": null,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_04_intern_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.325,
+          "leaked": []
+        },
+        {
+          "id": "r61",
+          "rank": null,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.624,
+          "leaked": []
+        },
+        {
+          "id": "r62",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.466,
+          "leaked": []
+        },
+        {
+          "id": "r63",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_design-levels",
+            "playbook_design-management"
+          ],
+          "confidence": 0.391,
+          "leaked": []
+        },
+        {
+          "id": "r64",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-paas",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.38,
+          "leaked": []
+        },
+        {
+          "id": "r65",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_design-management",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.778,
+          "leaked": []
+        },
+        {
+          "id": "r66",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_spt"
+          ],
+          "confidence": 0.619,
+          "leaked": []
+        },
+        {
+          "id": "r67",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_design-management",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.451,
+          "leaked": []
+        }
+      ],
+      "index_build_s": 1.43,
+      "query_ms": 12.2
+    },
+    "dense[cointegrated/rubert-tiny2]": {
+      "queries": 64,
+      "recall@1": 0.4062,
+      "recall@3": 0.6094,
+      "mrr@5": 0.5203,
+      "acl_leaks": 0,
+      "per_query": [
+        {
+          "id": "r01",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_avito-developer-practice",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.926,
+          "leaked": []
+        },
+        {
+          "id": "r02",
+          "rank": null,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_avito-developer-practice",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.37,
+          "leaked": []
+        },
+        {
+          "id": "r03",
+          "rank": 4,
+          "top": [
+            "playbook_developer-profile",
+            "doc_02_security_restrictions",
+            "playbook_design-management"
+          ],
+          "confidence": 0.568,
+          "leaked": []
+        },
+        {
+          "id": "r04",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.614,
+          "leaked": []
+        },
+        {
+          "id": "r05",
+          "rank": 4,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.497,
+          "leaked": []
+        },
+        {
+          "id": "r06",
+          "rank": null,
+          "top": [
+            "playbook_design-levels",
+            "playbook_ds-skills",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 0.456,
+          "leaked": []
+        },
+        {
+          "id": "r07",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.816,
+          "leaked": []
+        },
+        {
+          "id": "r08",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_developer-profile",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.47,
+          "leaked": []
+        },
+        {
+          "id": "r09",
+          "rank": null,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_development-principles",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.432,
+          "leaked": []
+        },
+        {
+          "id": "r10",
+          "rank": null,
+          "top": [
+            "playbook_design-levels",
+            "playbook_product-levels",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.406,
+          "leaked": []
+        },
+        {
+          "id": "r11",
+          "rank": null,
+          "top": [
+            "playbook_design-levels",
+            "playbook_neighborhood-agreement",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.496,
+          "leaked": []
+        },
+        {
+          "id": "r12",
+          "rank": null,
+          "top": [
+            "playbook_techlead-profile",
+            "doc_01_onboarding_access",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.608,
+          "leaked": []
+        },
+        {
+          "id": "r13",
+          "rank": 5,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_developer-profile",
+            "playbook_goal-setting"
+          ],
+          "confidence": 0.766,
+          "leaked": []
+        },
+        {
+          "id": "r14",
+          "rank": null,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.698,
+          "leaked": []
+        },
+        {
+          "id": "r15",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r16",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.648,
+          "leaked": []
+        },
+        {
+          "id": "r17",
+          "rank": 2,
+          "top": [
+            "playbook_design-levels",
+            "doc_04_intern_checklist",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r18",
+          "rank": 3,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_QA-profile",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r19",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_bi-developers",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r20",
+          "rank": 3,
+          "top": [
+            "playbook_product-levels",
+            "playbook_ds-skills",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.829,
+          "leaked": []
+        },
+        {
+          "id": "r21",
+          "rank": null,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_analytics-management",
+            "playbook_product-levels"
+          ],
+          "confidence": 0.634,
+          "leaked": []
+        },
+        {
+          "id": "r22",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_02_security_restrictions",
+            "playbook_design-levels"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r23",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-history",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r24",
+          "rank": 1,
+          "top": [
+            "playbook_books",
+            "playbook_training-and-development",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r25",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r26",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r27",
+          "rank": null,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.694,
+          "leaked": []
+        },
+        {
+          "id": "r28",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r29",
+          "rank": 4,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_developer-profile"
+          ],
+          "confidence": 0.7,
+          "leaked": []
+        },
+        {
+          "id": "r30",
+          "rank": 5,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_design-levels",
+            "playbook_developer-profile"
+          ],
+          "confidence": 0.628,
+          "leaked": []
+        },
+        {
+          "id": "r31",
+          "rank": null,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.607,
+          "leaked": []
+        },
+        {
+          "id": "r32",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_design-management",
+            "playbook_mission-and-values"
+          ],
+          "confidence": 0.779,
+          "leaked": []
+        },
+        {
+          "id": "r33",
+          "rank": 3,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_design-management",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.712,
+          "leaked": []
+        },
+        {
+          "id": "r34",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_developer-profile",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r35",
+          "rank": 4,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.71,
+          "leaked": []
+        },
+        {
+          "id": "r36",
+          "rank": 1,
+          "top": [
+            "playbook_avito-paas",
+            "playbook_avito-paas",
+            "playbook_avito-paas"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r37",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_QA-profile",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.706,
+          "leaked": []
+        },
+        {
+          "id": "r38",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_design-levels",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.747,
+          "leaked": []
+        },
+        {
+          "id": "r39",
+          "rank": 2,
+          "top": [
+            "playbook_design-levels",
+            "playbook_neighborhood-agreement",
+            "playbook_developer-profile"
+          ],
+          "confidence": 0.642,
+          "leaked": []
+        },
+        {
+          "id": "r40",
+          "rank": 2,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_neighborhood-agreement",
+            "playbook_developer-profile"
+          ],
+          "confidence": 0.888,
+          "leaked": []
+        },
+        {
+          "id": "r41",
+          "rank": 1,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_QA-profile",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r42",
+          "rank": 1,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_tech_design_review",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.422,
+          "leaked": []
+        },
+        {
+          "id": "r43",
+          "rank": 3,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_techlead-profile",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r44",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.572,
+          "leaked": []
+        },
+        {
+          "id": "r45",
+          "rank": null,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_techlead-profile",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.487,
+          "leaked": []
+        },
+        {
+          "id": "r46",
+          "rank": 3,
+          "top": [
+            "playbook_design-levels",
+            "playbook_techlead-profile",
+            "playbook_goal-setting"
+          ],
+          "confidence": 0.703,
+          "leaked": []
+        },
+        {
+          "id": "r47",
+          "rank": 5,
+          "top": [
+            "playbook_analytics-levels",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.638,
+          "leaked": []
+        },
+        {
+          "id": "r48",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_developer-profile",
+            "playbook_spt"
+          ],
+          "confidence": 0.609,
+          "leaked": []
+        },
+        {
+          "id": "r49",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_developer-profile",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.658,
+          "leaked": []
+        },
+        {
+          "id": "r50",
+          "rank": 2,
+          "top": [
+            "playbook_ds-managers-profiles",
+            "playbook_processes-and-standards",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.627,
+          "leaked": []
+        },
+        {
+          "id": "r51",
+          "rank": 2,
+          "top": [
+            "playbook_development-principles",
+            "playbook_processes-and-standards",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 0.529,
+          "leaked": []
+        },
+        {
+          "id": "r52",
+          "rank": null,
+          "top": [
+            "playbook_design-levels",
+            "playbook_bi-developers",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.796,
+          "leaked": []
+        },
+        {
+          "id": "r53",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_ds-skills",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r54",
+          "rank": 2,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_students",
+            "playbook_developer-profile"
+          ],
+          "confidence": 0.602,
+          "leaked": []
+        },
+        {
+          "id": "r55",
+          "rank": 1,
+          "top": [
+            "playbook_avito-history",
+            "playbook_avito-history",
+            "playbook_avito-history"
+          ],
+          "confidence": 0.557,
+          "leaked": []
+        },
+        {
+          "id": "r56",
+          "rank": 3,
+          "top": [
+            "playbook_analytics-management",
+            "playbook_books",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r57",
+          "rank": null,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.596,
+          "leaked": []
+        },
+        {
+          "id": "r58",
+          "rank": 1,
+          "top": [
+            "playbook_QA-profile",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.696,
+          "leaked": []
+        },
+        {
+          "id": "r59",
+          "rank": null,
+          "top": [
+            "playbook_techlead-profile",
+            "doc_02_security_restrictions",
+            "playbook_analytics-levels"
+          ],
+          "confidence": 0.64,
+          "leaked": []
+        },
+        {
+          "id": "r60",
+          "rank": null,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_recruitment-and-office",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.562,
+          "leaked": []
+        },
+        {
+          "id": "r61",
+          "rank": null,
+          "top": [
+            "playbook_ds-skills",
+            "playbook_QA-profile",
+            "playbook_goal-setting"
+          ],
+          "confidence": 0.707,
+          "leaked": []
+        },
+        {
+          "id": "r62",
+          "rank": 5,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_techlead-profile",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.539,
+          "leaked": []
+        },
+        {
+          "id": "r63",
+          "rank": null,
+          "top": [
+            "playbook_design-management",
+            "doc_05_backend_checklist",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 0.424,
+          "leaked": []
+        },
+        {
+          "id": "r64",
+          "rank": 2,
+          "top": [
+            "playbook_books",
+            "doc_05_backend_checklist",
+            "playbook_books"
+          ],
+          "confidence": 0.573,
+          "leaked": []
+        },
+        {
+          "id": "r65",
+          "rank": null,
+          "top": [
+            "playbook_design-management",
+            "playbook_design-levels",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.632,
+          "leaked": []
+        },
+        {
+          "id": "r66",
+          "rank": null,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_mission-and-values",
+            "playbook_analytics-management"
+          ],
+          "confidence": 0.615,
+          "leaked": []
+        },
+        {
+          "id": "r67",
+          "rank": null,
+          "top": [
+            "playbook_books",
+            "playbook_books",
+            "playbook_books"
+          ],
+          "confidence": 0.492,
+          "leaked": []
+        }
+      ],
+      "index_build_s": 9.16,
+      "query_ms": 8.0
+    },
+    "bm25+dense[cointegrated/rubert-tiny2]": {
+      "queries": 64,
+      "recall@1": 0.7969,
+      "recall@3": 0.9062,
+      "mrr@5": 0.8482,
+      "acl_leaks": 0,
+      "per_query": [
+        {
+          "id": "r01",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_spt"
+          ],
+          "confidence": 0.926,
+          "leaked": []
+        },
+        {
+          "id": "r02",
+          "rank": 3,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_bi-developers",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.37,
+          "leaked": []
+        },
+        {
+          "id": "r03",
+          "rank": 2,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.566,
+          "leaked": []
+        },
+        {
+          "id": "r04",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.614,
+          "leaked": []
+        },
+        {
+          "id": "r05",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.553,
+          "leaked": []
+        },
+        {
+          "id": "r06",
+          "rank": null,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_avito-developer-practice",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.406,
+          "leaked": []
+        },
+        {
+          "id": "r07",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r08",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_developer-profile",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.47,
+          "leaked": []
+        },
+        {
+          "id": "r09",
+          "rank": 2,
+          "top": [
+            "playbook_development-principles",
+            "doc_02_security_restrictions",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r10",
+          "rank": null,
+          "top": [
+            "playbook_analytics-levels",
+            "doc_02_security_restrictions",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.43,
+          "leaked": []
+        },
+        {
+          "id": "r11",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_development-principles",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.727,
+          "leaked": []
+        },
+        {
+          "id": "r12",
+          "rank": 3,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 0.62,
+          "leaked": []
+        },
+        {
+          "id": "r13",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.766,
+          "leaked": []
+        },
+        {
+          "id": "r14",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "playbook_product-levels"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r15",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r16",
+          "rank": 4,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.648,
+          "leaked": []
+        },
+        {
+          "id": "r17",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_developer-profile",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r18",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_avito-developer-practice",
+            "playbook_ds-skills"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r19",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_tech_design_review",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r20",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.829,
+          "leaked": []
+        },
+        {
+          "id": "r21",
+          "rank": null,
+          "top": [
+            "playbook_avito-open-source",
+            "playbook_avito-open-source",
+            "playbook_analytics-management"
+          ],
+          "confidence": 0.568,
+          "leaked": []
+        },
+        {
+          "id": "r22",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_01_onboarding_access",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r23",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-open-source",
+            "playbook_avito-history"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r24",
+          "rank": 1,
+          "top": [
+            "playbook_books",
+            "doc_05_backend_checklist",
+            "playbook_avito-paas"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r25",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_books",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r26",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_developer-profile",
+            "playbook_product-levels"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r27",
+          "rank": 5,
+          "top": [
+            "playbook_ds-managers-profiles",
+            "playbook_ds-managers-profiles",
+            "playbook_ds-managers-profiles"
+          ],
+          "confidence": 0.757,
+          "leaked": []
+        },
+        {
+          "id": "r28",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_techlead-profile",
+            "playbook_design-management"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r29",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_avito-developer-practice",
+            "playbook_spt"
+          ],
+          "confidence": 0.7,
+          "leaked": []
+        },
+        {
+          "id": "r30",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.618,
+          "leaked": []
+        },
+        {
+          "id": "r31",
+          "rank": 2,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_mission-and-values",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.772,
+          "leaked": []
+        },
+        {
+          "id": "r32",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_mission-and-values",
+            "playbook_design-management"
+          ],
+          "confidence": 0.779,
+          "leaked": []
+        },
+        {
+          "id": "r33",
+          "rank": 1,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.699,
+          "leaked": []
+        },
+        {
+          "id": "r34",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_developer-profile",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r35",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_QA-profile",
+            "playbook_developer-profile"
+          ],
+          "confidence": 0.668,
+          "leaked": []
+        },
+        {
+          "id": "r36",
+          "rank": 1,
+          "top": [
+            "playbook_avito-paas",
+            "playbook_avito-paas",
+            "playbook_avito-paas"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r37",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_QA-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.706,
+          "leaked": []
+        },
+        {
+          "id": "r38",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_avito-developer-practice",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.747,
+          "leaked": []
+        },
+        {
+          "id": "r39",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.821,
+          "leaked": []
+        },
+        {
+          "id": "r40",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.888,
+          "leaked": []
+        },
+        {
+          "id": "r41",
+          "rank": 1,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_recruitment-and-office",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r42",
+          "rank": 1,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_recruitment-and-office",
+            "playbook_processes-and-standards"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r43",
+          "rank": 1,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r44",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_ds-skills",
+            "playbook_structure"
+          ],
+          "confidence": 0.572,
+          "leaked": []
+        },
+        {
+          "id": "r45",
+          "rank": 3,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_developer-profile",
+            "playbook_structure"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r46",
+          "rank": 3,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_QA-profile",
+            "playbook_goal-setting"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r47",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_analytics-management",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r48",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_goal-setting",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r49",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 0.658,
+          "leaked": []
+        },
+        {
+          "id": "r50",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "playbook_techlead-profile",
+            "playbook_ds-managers-profiles"
+          ],
+          "confidence": 0.627,
+          "leaked": []
+        },
+        {
+          "id": "r51",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "doc_02_security_restrictions",
+            "playbook_product-levels"
+          ],
+          "confidence": 0.529,
+          "leaked": []
+        },
+        {
+          "id": "r52",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.796,
+          "leaked": []
+        },
+        {
+          "id": "r53",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r54",
+          "rank": 1,
+          "top": [
+            "playbook_students",
+            "playbook_students",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.74,
+          "leaked": []
+        },
+        {
+          "id": "r55",
+          "rank": 1,
+          "top": [
+            "playbook_avito-history",
+            "playbook_avito-history",
+            "playbook_avito-history"
+          ],
+          "confidence": 0.557,
+          "leaked": []
+        },
+        {
+          "id": "r56",
+          "rank": 1,
+          "top": [
+            "playbook_avito-open-source",
+            "playbook_training-and-development",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r57",
+          "rank": null,
+          "top": [
+            "playbook_books",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.576,
+          "leaked": []
+        },
+        {
+          "id": "r58",
+          "rank": 1,
+          "top": [
+            "playbook_QA-profile",
+            "playbook_developer-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r59",
+          "rank": null,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_analytics-levels",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.613,
+          "leaked": []
+        },
+        {
+          "id": "r60",
+          "rank": null,
+          "top": [
+            "playbook_avito-developer-practice",
+            "doc_04_intern_checklist",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.489,
+          "leaked": []
+        },
+        {
+          "id": "r61",
+          "rank": null,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_design-levels",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.629,
+          "leaked": []
+        },
+        {
+          "id": "r62",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.495,
+          "leaked": []
+        },
+        {
+          "id": "r63",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_design-management",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.391,
+          "leaked": []
+        },
+        {
+          "id": "r64",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-history",
+            "playbook_students"
+          ],
+          "confidence": 0.537,
+          "leaked": []
+        },
+        {
+          "id": "r65",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_design-management",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.778,
+          "leaked": []
+        },
+        {
+          "id": "r66",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_mission-and-values",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.619,
+          "leaked": []
+        },
+        {
+          "id": "r67",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-history",
+            "playbook_design-management"
+          ],
+          "confidence": 0.451,
+          "leaked": []
+        }
+      ],
+      "index_build_s": 8.57,
+      "query_ms": 9.2
+    },
+    "bm25+tfidf+dense[cointegrated/rubert-tiny2]": {
+      "queries": 64,
+      "recall@1": 0.7656,
+      "recall@3": 0.9375,
+      "mrr@5": 0.8443,
+      "acl_leaks": 0,
+      "per_query": [
+        {
+          "id": "r01",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_spt"
+          ],
+          "confidence": 0.926,
+          "leaked": []
+        },
+        {
+          "id": "r02",
+          "rank": 3,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_bi-developers",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.37,
+          "leaked": []
+        },
+        {
+          "id": "r03",
+          "rank": 2,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.566,
+          "leaked": []
+        },
+        {
+          "id": "r04",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.614,
+          "leaked": []
+        },
+        {
+          "id": "r05",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 0.553,
+          "leaked": []
+        },
+        {
+          "id": "r06",
+          "rank": 5,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_avito-developer-practice",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.382,
+          "leaked": []
+        },
+        {
+          "id": "r07",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r08",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_developer-profile",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.47,
+          "leaked": []
+        },
+        {
+          "id": "r09",
+          "rank": 2,
+          "top": [
+            "playbook_development-principles",
+            "doc_02_security_restrictions",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r10",
+          "rank": null,
+          "top": [
+            "playbook_analytics-levels",
+            "doc_02_security_restrictions",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.43,
+          "leaked": []
+        },
+        {
+          "id": "r11",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_development-principles",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.727,
+          "leaked": []
+        },
+        {
+          "id": "r12",
+          "rank": 3,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 0.62,
+          "leaked": []
+        },
+        {
+          "id": "r13",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_ds-skills",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.766,
+          "leaked": []
+        },
+        {
+          "id": "r14",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "playbook_product-levels"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r15",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r16",
+          "rank": 2,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_04_intern_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.648,
+          "leaked": []
+        },
+        {
+          "id": "r17",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_developer-profile",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r18",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_avito-developer-practice",
+            "playbook_product-levels"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r19",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_tech_design_review",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r20",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.829,
+          "leaked": []
+        },
+        {
+          "id": "r21",
+          "rank": null,
+          "top": [
+            "playbook_avito-open-source",
+            "playbook_avito-open-source",
+            "playbook_analytics-management"
+          ],
+          "confidence": 0.568,
+          "leaked": []
+        },
+        {
+          "id": "r22",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r23",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-history",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r24",
+          "rank": 1,
+          "top": [
+            "playbook_books",
+            "playbook_avito-paas",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r25",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_books",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r26",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_developer-profile",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r27",
+          "rank": 3,
+          "top": [
+            "playbook_ds-managers-profiles",
+            "playbook_ds-managers-profiles",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.757,
+          "leaked": []
+        },
+        {
+          "id": "r28",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_design-management",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r29",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_avito-developer-practice",
+            "playbook_spt"
+          ],
+          "confidence": 0.7,
+          "leaked": []
+        },
+        {
+          "id": "r30",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.618,
+          "leaked": []
+        },
+        {
+          "id": "r31",
+          "rank": 2,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_mission-and-values",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.772,
+          "leaked": []
+        },
+        {
+          "id": "r32",
+          "rank": 2,
+          "top": [
+            "playbook_design-management",
+            "playbook_mission-and-values",
+            "playbook_mission-and-values"
+          ],
+          "confidence": 0.779,
+          "leaked": []
+        },
+        {
+          "id": "r33",
+          "rank": 1,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.699,
+          "leaked": []
+        },
+        {
+          "id": "r34",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_developer-profile",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r35",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_QA-profile",
+            "playbook_developer-profile"
+          ],
+          "confidence": 0.668,
+          "leaked": []
+        },
+        {
+          "id": "r36",
+          "rank": 1,
+          "top": [
+            "playbook_avito-paas",
+            "playbook_avito-paas",
+            "playbook_avito-paas"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r37",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_QA-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r38",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_avito-developer-practice",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.747,
+          "leaked": []
+        },
+        {
+          "id": "r39",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.821,
+          "leaked": []
+        },
+        {
+          "id": "r40",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.888,
+          "leaked": []
+        },
+        {
+          "id": "r41",
+          "rank": 1,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_recruitment-and-office",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r42",
+          "rank": 1,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_recruitment-and-office",
+            "playbook_processes-and-standards"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r43",
+          "rank": 1,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r44",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_structure",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.572,
+          "leaked": []
+        },
+        {
+          "id": "r45",
+          "rank": 2,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_structure",
+            "playbook_structure"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r46",
+          "rank": 2,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_goal-setting",
+            "playbook_QA-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r47",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_analytics-management",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r48",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_goal-setting"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r49",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 0.658,
+          "leaked": []
+        },
+        {
+          "id": "r50",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "playbook_techlead-profile",
+            "playbook_processes-and-standards"
+          ],
+          "confidence": 0.627,
+          "leaked": []
+        },
+        {
+          "id": "r51",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "doc_02_security_restrictions",
+            "playbook_product-levels"
+          ],
+          "confidence": 0.885,
+          "leaked": []
+        },
+        {
+          "id": "r52",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.796,
+          "leaked": []
+        },
+        {
+          "id": "r53",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r54",
+          "rank": 1,
+          "top": [
+            "playbook_students",
+            "playbook_students",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.74,
+          "leaked": []
+        },
+        {
+          "id": "r55",
+          "rank": 1,
+          "top": [
+            "playbook_avito-history",
+            "playbook_avito-history",
+            "playbook_avito-history"
+          ],
+          "confidence": 0.557,
+          "leaked": []
+        },
+        {
+          "id": "r56",
+          "rank": 1,
+          "top": [
+            "playbook_avito-open-source",
+            "playbook_avito-open-source",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r57",
+          "rank": null,
+          "top": [
+            "playbook_books",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 0.576,
+          "leaked": []
+        },
+        {
+          "id": "r58",
+          "rank": 1,
+          "top": [
+            "playbook_QA-profile",
+            "playbook_developer-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r59",
+          "rank": null,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_bi-developers",
+            "playbook_design-management"
+          ],
+          "confidence": 0.613,
+          "leaked": []
+        },
+        {
+          "id": "r60",
+          "rank": null,
+          "top": [
+            "playbook_avito-developer-practice",
+            "doc_04_intern_checklist",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 0.489,
+          "leaked": []
+        },
+        {
+          "id": "r61",
+          "rank": null,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_design-levels",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.629,
+          "leaked": []
+        },
+        {
+          "id": "r62",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.495,
+          "leaked": []
+        },
+        {
+          "id": "r63",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_design-management",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.391,
+          "leaked": []
+        },
+        {
+          "id": "r64",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-history",
+            "playbook_students"
+          ],
+          "confidence": 0.537,
+          "leaked": []
+        },
+        {
+          "id": "r65",
+          "rank": 3,
+          "top": [
+            "playbook_ds-skills",
+            "playbook_design-management",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 0.778,
+          "leaked": []
+        },
+        {
+          "id": "r66",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_mission-and-values",
+            "playbook_design-levels"
+          ],
+          "confidence": 0.619,
+          "leaked": []
+        },
+        {
+          "id": "r67",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-history",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 0.451,
+          "leaked": []
+        }
+      ],
+      "index_build_s": 8.3,
+      "query_ms": 19.0
+    },
+    "dense[intfloat/multilingual-e5-small]": {
+      "queries": 64,
+      "recall@1": 0.7969,
+      "recall@3": 0.8594,
+      "mrr@5": 0.8326,
+      "acl_leaks": 0,
+      "per_query": [
+        {
+          "id": "r01",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r02",
+          "rank": null,
+          "top": [
+            "playbook_avito-developer-practice",
+            "doc_04_intern_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r03",
+          "rank": 2,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r04",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r05",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.977,
+          "leaked": []
+        },
+        {
+          "id": "r06",
+          "rank": null,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_neighborhood-agreement",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.961,
+          "leaked": []
+        },
+        {
+          "id": "r07",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r08",
+          "rank": null,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r09",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_bi-developers",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r10",
+          "rank": null,
+          "top": [
+            "playbook_books",
+            "playbook_bi-developers",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r11",
+          "rank": null,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_bi-developers",
+            "playbook_books"
+          ],
+          "confidence": 0.969,
+          "leaked": []
+        },
+        {
+          "id": "r12",
+          "rank": 3,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_avito-open-source",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r13",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.993,
+          "leaked": []
+        },
+        {
+          "id": "r14",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "playbook_students"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r15",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r16",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r17",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r18",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_bi-developers",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r19",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_development-principles",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r20",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r21",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-open-source",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r22",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-open-source",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r23",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_spt",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r24",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r25",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_books",
+            "playbook_students"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r26",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_books",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r27",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_bi-developers",
+            "playbook_tech_design_review"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r28",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-developer-practice",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r29",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r30",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r31",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_design-management",
+            "playbook_mission-and-values"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r32",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_design-management",
+            "playbook_product-levels"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r33",
+          "rank": 1,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_techlead-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r34",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_QA-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r35",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_developer-profile",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r36",
+          "rank": 1,
+          "top": [
+            "playbook_avito-paas",
+            "playbook_avito-paas",
+            "playbook_avito-paas"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r37",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_tech_design_review",
+            "playbook_goal-setting"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r38",
+          "rank": 4,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_bi-developers",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r39",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_development-principles",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r40",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r41",
+          "rank": 2,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_training-and-development",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r42",
+          "rank": 1,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_recruitment-and-office",
+            "playbook_processes-and-standards"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r43",
+          "rank": 1,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r44",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_structure",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r45",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_structure",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r46",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_goal-setting",
+            "playbook_goal-setting"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r47",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_ds-managers-profiles",
+            "playbook_design-management"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r48",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r49",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r50",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "playbook_analytics-management",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r51",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "playbook_books",
+            "playbook_training-and-development"
+          ],
+          "confidence": 0.978,
+          "leaked": []
+        },
+        {
+          "id": "r52",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r53",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r54",
+          "rank": null,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_02_security_restrictions",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r55",
+          "rank": 1,
+          "top": [
+            "playbook_avito-history",
+            "playbook_avito-history",
+            "playbook_avito-history"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r56",
+          "rank": 1,
+          "top": [
+            "playbook_avito-open-source",
+            "playbook_training-and-development",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r57",
+          "rank": 1,
+          "top": [
+            "playbook_ds-skills",
+            "playbook_bi-developers",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r58",
+          "rank": 1,
+          "top": [
+            "playbook_QA-profile",
+            "playbook_developer-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r59",
+          "rank": null,
+          "top": [
+            "playbook_books",
+            "playbook_neighborhood-agreement",
+            "playbook_books"
+          ],
+          "confidence": 0.982,
+          "leaked": []
+        },
+        {
+          "id": "r60",
+          "rank": null,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_bi-developers",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r61",
+          "rank": null,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r62",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_04_intern_checklist",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r63",
+          "rank": null,
+          "top": [
+            "playbook_books",
+            "playbook_product-levels",
+            "playbook_books"
+          ],
+          "confidence": 0.954,
+          "leaked": []
+        },
+        {
+          "id": "r64",
+          "rank": 5,
+          "top": [
+            "playbook_avito-open-source",
+            "playbook_avito-open-source",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r65",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_tech_design_review",
+            "playbook_design-management"
+          ],
+          "confidence": 0.969,
+          "leaked": []
+        },
+        {
+          "id": "r66",
+          "rank": 2,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_spt",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r67",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-open-source",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        }
+      ],
+      "index_build_s": 49.63,
+      "query_ms": 30.4
+    },
+    "bm25+dense[intfloat/multilingual-e5-small]": {
+      "queries": 64,
+      "recall@1": 0.8438,
+      "recall@3": 0.9062,
+      "mrr@5": 0.8833,
+      "acl_leaks": 0,
+      "per_query": [
+        {
+          "id": "r01",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r02",
+          "rank": null,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_04_intern_checklist",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r03",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r04",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r05",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 0.977,
+          "leaked": []
+        },
+        {
+          "id": "r06",
+          "rank": 2,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 0.949,
+          "leaked": []
+        },
+        {
+          "id": "r07",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r08",
+          "rank": null,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r09",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_bi-developers",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r10",
+          "rank": null,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_bi-developers",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r11",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "playbook_books"
+          ],
+          "confidence": 0.937,
+          "leaked": []
+        },
+        {
+          "id": "r12",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r13",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.993,
+          "leaked": []
+        },
+        {
+          "id": "r14",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "playbook_students"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r15",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r16",
+          "rank": 4,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r17",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r18",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r19",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_tech_design_review",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r20",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r21",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r22",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_bi-developers",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r23",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-developer-practice",
+            "playbook_ds-managers-profiles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r24",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_books",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r25",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_books",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r26",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-developer-practice",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r27",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_ds-managers-profiles",
+            "playbook_ds-managers-profiles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r28",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_developer-profile",
+            "playbook_structure"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r29",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r30",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_spt"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r31",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_mission-and-values",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r32",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_design-management",
+            "playbook_mission-and-values"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r33",
+          "rank": 1,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_ds-managers-profiles",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r34",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_QA-profile",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r35",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_developer-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r36",
+          "rank": 1,
+          "top": [
+            "playbook_avito-paas",
+            "playbook_avito-paas",
+            "playbook_avito-paas"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r37",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_tech_design_review",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r38",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r39",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_development-principles",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r40",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r41",
+          "rank": 2,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_training-and-development",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r42",
+          "rank": 2,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_training-and-development",
+            "playbook_processes-and-standards"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r43",
+          "rank": 1,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r44",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_structure",
+            "playbook_design-management"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r45",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_structure",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r46",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_goal-setting",
+            "playbook_goal-setting"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r47",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_ds-managers-profiles",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r48",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r49",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r50",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "playbook_processes-and-standards",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r51",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "playbook_recruitment-and-office",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.978,
+          "leaked": []
+        },
+        {
+          "id": "r52",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r53",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r54",
+          "rank": 3,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_students"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r55",
+          "rank": 1,
+          "top": [
+            "playbook_avito-history",
+            "playbook_avito-history",
+            "playbook_avito-history"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r56",
+          "rank": 1,
+          "top": [
+            "playbook_avito-open-source",
+            "playbook_avito-open-source",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r57",
+          "rank": 5,
+          "top": [
+            "playbook_books",
+            "playbook_bi-developers",
+            "playbook_analytics-management"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r58",
+          "rank": 1,
+          "top": [
+            "playbook_QA-profile",
+            "playbook_developer-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r59",
+          "rank": null,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_analytics-levels",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.964,
+          "leaked": []
+        },
+        {
+          "id": "r60",
+          "rank": null,
+          "top": [
+            "playbook_avito-developer-practice",
+            "doc_01_onboarding_access",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r61",
+          "rank": null,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r62",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r63",
+          "rank": 4,
+          "top": [
+            "playbook_bi-developers",
+            "playbook_design-management",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.95,
+          "leaked": []
+        },
+        {
+          "id": "r64",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_processes-and-standards",
+            "playbook_structure"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r65",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_tech_design_review",
+            "playbook_developer-profile"
+          ],
+          "confidence": 0.969,
+          "leaked": []
+        },
+        {
+          "id": "r66",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r67",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-history",
+            "playbook_design-management"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        }
+      ],
+      "index_build_s": 48.7,
+      "query_ms": 26.5
+    },
+    "bm25+tfidf+dense[intfloat/multilingual-e5-small]": {
+      "queries": 64,
+      "recall@1": 0.8438,
+      "recall@3": 0.9531,
+      "mrr@5": 0.8945,
+      "acl_leaks": 0,
+      "per_query": [
+        {
+          "id": "r01",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r02",
+          "rank": null,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_bi-developers",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r03",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r04",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r05",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_development-principles"
+          ],
+          "confidence": 0.977,
+          "leaked": []
+        },
+        {
+          "id": "r06",
+          "rank": 3,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_04_intern_checklist",
+            "doc_02_security_restrictions"
+          ],
+          "confidence": 0.949,
+          "leaked": []
+        },
+        {
+          "id": "r07",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r08",
+          "rank": 4,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r09",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_bi-developers",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r10",
+          "rank": null,
+          "top": [
+            "doc_02_security_restrictions",
+            "playbook_bi-developers",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r11",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "playbook_books"
+          ],
+          "confidence": 0.937,
+          "leaked": []
+        },
+        {
+          "id": "r12",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r13",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_01_onboarding_access",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.993,
+          "leaked": []
+        },
+        {
+          "id": "r14",
+          "rank": 1,
+          "top": [
+            "doc_02_security_restrictions",
+            "doc_02_security_restrictions",
+            "playbook_students"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r15",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r16",
+          "rank": 3,
+          "top": [
+            "doc_01_onboarding_access",
+            "doc_05_backend_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r17",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r18",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r19",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "playbook_tech_design_review",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r20",
+          "rank": 1,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r21",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "doc_05_backend_checklist",
+            "playbook_avito-open-source"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r22",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_bi-developers",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r23",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-developer-practice",
+            "playbook_ds-managers-profiles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r24",
+          "rank": 1,
+          "top": [
+            "playbook_books",
+            "doc_05_backend_checklist",
+            "playbook_books"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r25",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_books",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r26",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-developer-practice",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r27",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_ds-managers-profiles",
+            "playbook_ds-managers-profiles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r28",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_developer-profile",
+            "playbook_structure"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r29",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r30",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_spt"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r31",
+          "rank": 1,
+          "top": [
+            "playbook_mission-and-values",
+            "playbook_mission-and-values",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r32",
+          "rank": 2,
+          "top": [
+            "playbook_design-management",
+            "playbook_mission-and-values",
+            "playbook_mission-and-values"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r33",
+          "rank": 1,
+          "top": [
+            "playbook_techlead-profile",
+            "playbook_ds-managers-profiles",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r34",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_QA-profile",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r35",
+          "rank": 1,
+          "top": [
+            "playbook_developer-profile",
+            "playbook_QA-profile",
+            "playbook_developer-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r36",
+          "rank": 1,
+          "top": [
+            "playbook_avito-paas",
+            "playbook_avito-paas",
+            "playbook_avito-paas"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r37",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_tech_design_review",
+            "playbook_goal-setting"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r38",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r39",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_development-principles",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r40",
+          "rank": 1,
+          "top": [
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement",
+            "playbook_neighborhood-agreement"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r41",
+          "rank": 1,
+          "top": [
+            "playbook_training-and-development",
+            "playbook_recruitment-and-office",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r42",
+          "rank": 2,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_training-and-development",
+            "playbook_processes-and-standards"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r43",
+          "rank": 1,
+          "top": [
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office",
+            "playbook_recruitment-and-office"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r44",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_design-management",
+            "playbook_structure"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r45",
+          "rank": 1,
+          "top": [
+            "playbook_structure",
+            "playbook_structure",
+            "playbook_structure"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r46",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_goal-setting",
+            "playbook_goal-setting"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r47",
+          "rank": 1,
+          "top": [
+            "playbook_goal-setting",
+            "playbook_design-management",
+            "playbook_design-management"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r48",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r49",
+          "rank": 1,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice",
+            "playbook_avito-developer-practice"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r50",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "playbook_processes-and-standards",
+            "playbook_techlead-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r51",
+          "rank": 1,
+          "top": [
+            "playbook_processes-and-standards",
+            "playbook_recruitment-and-office",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.978,
+          "leaked": []
+        },
+        {
+          "id": "r52",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r53",
+          "rank": 1,
+          "top": [
+            "playbook_development-principles",
+            "playbook_development-principles",
+            "playbook_development-principles"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r54",
+          "rank": 3,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "playbook_students"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r55",
+          "rank": 1,
+          "top": [
+            "playbook_avito-history",
+            "playbook_avito-history",
+            "playbook_avito-history"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r56",
+          "rank": 1,
+          "top": [
+            "playbook_avito-open-source",
+            "playbook_avito-open-source",
+            "playbook_training-and-development"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r57",
+          "rank": 2,
+          "top": [
+            "playbook_books",
+            "playbook_ds-skills",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r58",
+          "rank": 1,
+          "top": [
+            "playbook_QA-profile",
+            "playbook_developer-profile",
+            "playbook_QA-profile"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r59",
+          "rank": null,
+          "top": [
+            "playbook_avito-developer-practice",
+            "playbook_analytics-levels",
+            "playbook_ds-skills"
+          ],
+          "confidence": 0.964,
+          "leaked": []
+        },
+        {
+          "id": "r60",
+          "rank": null,
+          "top": [
+            "playbook_avito-developer-practice",
+            "doc_01_onboarding_access",
+            "playbook_bi-developers"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r61",
+          "rank": null,
+          "top": [
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist",
+            "doc_04_intern_checklist"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r62",
+          "rank": 1,
+          "top": [
+            "doc_01_onboarding_access",
+            "playbook_bi-developers",
+            "doc_01_onboarding_access"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r63",
+          "rank": 2,
+          "top": [
+            "playbook_design-management",
+            "doc_02_security_restrictions",
+            "playbook_bi-developers"
+          ],
+          "confidence": 0.95,
+          "leaked": []
+        },
+        {
+          "id": "r64",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_structure",
+            "playbook_processes-and-standards"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r65",
+          "rank": 1,
+          "top": [
+            "playbook_tech_design_review",
+            "playbook_tech_design_review",
+            "playbook_design-management"
+          ],
+          "confidence": 0.969,
+          "leaked": []
+        },
+        {
+          "id": "r66",
+          "rank": 1,
+          "top": [
+            "playbook_spt",
+            "playbook_spt",
+            "playbook_spt"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        },
+        {
+          "id": "r67",
+          "rank": 1,
+          "top": [
+            "doc_05_backend_checklist",
+            "playbook_avito-history",
+            "playbook_design-management"
+          ],
+          "confidence": 1.0,
+          "leaked": []
+        }
+      ],
+      "index_build_s": 51.0,
+      "query_ms": 38.6
+    }
+  }
+}

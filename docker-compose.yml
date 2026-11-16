@@ -53,6 +53,41 @@ services:
       timeout: 3s
       retries: 5
 
+  ml:
+    build:
+      context: ./ml
+      dockerfile: Dockerfile
+      args:
+        WITH_PLAYBOOK: ${ML_WITH_PLAYBOOK:-1}
+        WITH_DENSE: ${ML_WITH_DENSE:-0}
+
+    container_name: buddy-ml
+    restart: unless-stopped
+
+    environment:
+      ML_PORT: "8090"
+      ML_RETRIEVER: ${ML_RETRIEVER:-bm25}
+      # LLM-режим агента (OpenAI-совместимый API). Без ключа работает локальный режим.
+      LLM_ENABLED: ${LLM_ENABLED:-false}
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-}
+      LLM_TIMEOUT: ${LLM_TIMEOUT:-30s}
+
+    ports:
+      - "${ML_PORT:-8090}:8090"
+
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8090/readyz', timeout=2).status == 200 else 1)"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+
   backend:
     build:
       context: ./backend
@@ -77,6 +112,9 @@ services:
       MCP_ENABLED: ${MCP_ENABLED:-false}
       MCP_URL: ${MCP_URL:-}
       MCP_TIMEOUT: ${MCP_TIMEOUT:-10s}
+      # ML-сервис агента: POST /v1/agent/turn (contracts/ml-api.yaml)
+      ML_SERVICE_URL: http://ml:8090
+      ML_TIMEOUT: ${ML_TIMEOUT:-35s}
 
     ports:
       - "${BACKEND_PORT:-8080}:8080"
@@ -85,6 +123,8 @@ services:
       postgres:
         condition: service_healthy
       redis:
+        condition: service_healthy
+      ml:
         condition: service_healthy
 
   frontend:
