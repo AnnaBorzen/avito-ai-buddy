@@ -102,6 +102,11 @@ type Policy struct {
 	Code          string   `json:"code"`
 	Message       string   `json:"message"`
 	AllowedLevels []string `json:"allowed_levels"`
+	// ResourceID and AccessLevel identify the request the decision evaluated.
+	// They stay filled for denied requests, so the backend can build the
+	// contract's rbac_denial without parsing policy text.
+	ResourceID  string `json:"resource_id"`
+	AccessLevel string `json:"access_level"`
 }
 
 type Guard struct {

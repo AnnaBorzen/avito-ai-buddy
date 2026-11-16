@@ -101,6 +101,30 @@ func turnWithProposal(reply, resource, level, why string) string {
 	return string(body)
 }
 
+func turnWithPolicyDenial(reply, resource, level string) string {
+	body, _ := json.Marshal(map[string]any{
+		"reply": reply, "intent": "request_access", "reply_kind": "denied",
+		"sources": []map[string]any{{
+			"doc_id": "doc_02_security_restrictions", "title": "[ТЕСТОВАЯ ИНСТРУКЦИЯ] ИБ",
+			"section": "Матрица", "excerpt": "Продовые базы закрыты стажёрам.",
+			"is_synthetic": true, "source_type": "doc", "source_label": "wiki", "score": 0.8,
+		}},
+		"slots": map[string]any{
+			"resource_id": nil, "access_level": nil, "justification": justification,
+		},
+		"tool_call": nil,
+		"policy": map[string]any{
+			"allowed": false, "code": "RBAC_ACCESS_DENIED",
+			"message":        "Роли «intern» недоступен запрос к ресурсу «Боевой кластер БД Финансовых сервисов (Prod)».",
+			"allowed_levels": []string{},
+			"resource_id":    resource, "access_level": level,
+		},
+		"handoff_suggested": true,
+		"meta":              map[string]any{"model": "test-model"},
+	})
+	return string(body)
+}
+
 func newTask(t *testing.T, s stack, userID domain.UserID) service.Context {
 	t.Helper()
 	ctx, err := s.service.Context(context.Background(), userID)
@@ -236,6 +260,67 @@ func TestRbacDenialDoesNotCreateProposal(t *testing.T) {
 		t.Fatalf("context after denial: %v", err)
 	}
 	if after.ActiveOperation != nil {
+		t.Fatalf("active operation after denial = %+v", after.ActiveOperation)
+	}
+}
+
+func TestPolicyDenialDoesNotReturnFinishedOperationAsProposal(t *testing.T) {
+	st := testdb.Spawn(t)
+	s := newStack(t, st)
+	ctx := context.Background()
+	user := domain.UserID("usr_intern_01")
+	view := newTask(t, s, user)
+	taskID := domain.TaskInstanceID(view.Scenario.TaskInstanceID)
+
+	// A finished operation exists from an earlier turn.
+	s.turns <- turnWithProposal("Формирую заявку.", "space_auto_backend_wiki", "read", justification)
+	first, err := s.service.Chat(ctx, user, service.ChatRequest{
+		TaskInstanceID: taskID, Message: "Нужен доступ к вики команды",
+	})
+	if err != nil {
+		t.Fatalf("first chat: %v", err)
+	}
+	if first.ProposedOperation == nil {
+		t.Fatal("first chat did not propose an operation")
+	}
+	if _, err := s.service.Confirm(ctx, user, service.ConfirmRequest{
+		OperationID:  domain.OperationID(first.ProposedOperation.OperationID),
+		DraftVersion: 1, Key: "idem-key-policy-denial",
+	}); err != nil {
+		t.Fatalf("confirm: %v", err)
+	}
+
+	// The ML policy refuses before emitting a tool_call: the contract still
+	// requires a filled rbac_denial and no proposal card.
+	s.turns <- turnWithPolicyDenial(
+		"Запросить доступ к промышленной базе нельзя.", "db_fintech_prod_cluster", "write")
+	denied, err := s.service.Chat(ctx, user, service.ChatRequest{
+		TaskInstanceID: taskID, Message: "Дай доступ write к продовой базе",
+	})
+	if err != nil {
+		t.Fatalf("denied chat: %v", err)
+	}
+	want := service.RbacDenial{
+		ErrorCode:   "RBAC_ACCESS_DENIED",
+		Message:     "Роли «intern» недоступен запрос к ресурсу «Боевой кластер БД Финансовых сервисов (Prod)».",
+		ResourceID:  "db_fintech_prod_cluster",
+		AccessLevel: "write",
+	}
+	if denied.RbacDenial == nil || *denied.RbacDenial != want {
+		t.Fatalf("rbac_denial = %+v, want %+v", denied.RbacDenial, want)
+	}
+	if denied.ProposedOperation != nil {
+		t.Fatalf("denial returned a proposal card: %+v", denied.ProposedOperation)
+	}
+	if !denied.HandoffSuggested {
+		t.Fatal("handoff_suggested lost from the ML turn")
+	}
+
+	after, err := s.service.Context(ctx, user)
+	if err != nil {
+		t.Fatalf("context after denial: %v", err)
+	}
+	if after.ActiveOperation == nil || after.ActiveOperation.OperationStatus != string(domain.StatusSucceeded) {
 		t.Fatalf("active operation after denial = %+v", after.ActiveOperation)
 	}
 }

@@ -15,8 +15,9 @@ make db-migrate-up
 make db-migrate-version
 ```
 
-`make db-up` starts PostgreSQL from `docker-compose.yml`. The `migrate` service
-is available under the `tools` compose profile and is not started by `make up`.
+`make db-up` starts PostgreSQL from `docker-compose.yml`. `make up` runs the
+one-shot `migrate` service (compose profile `tools`) before starting the stack;
+`make db-migrate-up` applies migrations to an already running stack.
 
 ## Rollback
 
@@ -36,6 +37,9 @@ back.
   idempotency records.
 - `000002_analytics` owns analytics facts. Events are historical snapshots and
   intentionally have no foreign keys to operations.
+- `000003_tasks` owns durable task state: tasks, collected slots and dialog
+  messages. `000004_access_service` owns the access-service mock tickets; it has
+  no foreign keys to backend operations on purpose.
 - Reference data (`profiles`, `teams`, `resources`, scenario definition) is
   seeded in `backend/internal/domain/seed.go`; §9 of the architecture does not
   define tables for it.

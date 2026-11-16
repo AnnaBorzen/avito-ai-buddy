@@ -646,6 +646,19 @@ class Agent:
             if not decision.allowed:
                 return self._denied(req, slots, decision, prefix)
 
+        # Backend keeps one operation per task and never rewrites a confirmed
+        # one, so a proposal after successful submission cannot become a draft.
+        if op.get("operation_status") == "succeeded":
+            tid = ticket.get("ticket_id")
+            status = ticket.get("external_status")
+            text = prefix + (
+                (f"Заявка {tid} уже отправлена" if tid else "Заявка уже отправлена")
+                + (f", её статус: {status}" if status else "")
+                + ". Повторно подтверждать её не нужно. "
+                "Если нужен доступ к другому ресурсу или уровню, обратитесь к наставнику."
+            )
+            return TurnResult(text, "status", "request_access", slots=req.draft)
+
         missing = slots.missing()
         if missing:
             return self._clarify(req, slots, missing, prefix)

@@ -176,6 +176,11 @@ func (s *Service) consumeTurn(
 			if err != nil {
 				return ChatResponse{}, err
 			}
+			// A card is returned only when this turn produced or revised a
+			// draft. A confirmed or in-flight operation is not a proposal.
+			if op != nil && op.Status == domain.StatusAwaitingConfirmation {
+				response.ProposedOperation = toOperation(op)
+			}
 			if op != nil {
 				s.record(ctx, domain.AnalyticsEvent{
 					Event: domain.EventActionProposed, ActorRef: profile.UserID,
@@ -187,11 +192,15 @@ func (s *Service) consumeTurn(
 				})
 			}
 		}
+	} else if turn.Policy != nil && !turn.Policy.Allowed {
+		// The ML service denies advisory before proposing a tool_call. The
+		// contract still requires rbac_denial so the client can show the
+		// refusal as part of the dialog.
+		denial = rbacDenialFromPolicy(*turn.Policy)
 	}
 	if denial != nil {
 		response.RbacDenial = denial
 	}
-	response.ProposedOperation = toOperation(op)
 
 	slots := turn.Slots
 	if op != nil && turn.ToolCall != nil {

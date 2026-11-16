@@ -129,6 +129,13 @@ def test_locked_operation_blocks_new_request(ask):
     assert r["tool_call"] is None and "дубликат" in r["reply"]
 
 
+def test_succeeded_operation_is_not_proposed_again(ask):
+    op = {"operation_status": "succeeded",
+          "ticket": {"ticket_id": "REQ-1", "external_status": "approved"}}
+    r = ask("нужен доступ write к вики команды для заметок по онбордингу", operation=op)
+    assert r["tool_call"] is None and r["reply_kind"] == "status" and "REQ-1" in r["reply"]
+
+
 def test_changing_resource_resets_level(ask):
     draft = {"resource_id": "space_auto_backend_wiki", "access_level": "write", "justification": "Изучение документации"}
     r = ask("лучше к учебному репозиторию", draft=draft)
@@ -139,12 +146,14 @@ def test_changing_resource_resets_level(ask):
 def test_denied_other_team_repo_for_intern2(agent, intern2):
     r = agent.turn(TurnRequest.from_dict({"user": intern2, "message": "нужен read к repo_auto_core_sandbox для практики по go"}))
     assert r["reply_kind"] == "denied" and r["policy"]["code"] == "RBAC_ACCESS_DENIED" and r["handoff_suggested"]
+    assert r["policy"]["resource_id"] == "repo_auto_core_sandbox" and r["policy"]["access_level"] == "read"
 
 
 def test_permissions_from_backend_are_respected(ask):
     perms = [{"resource_id": "space_auto_backend_wiki", "allowed_levels": ["read"]}]
     r = ask("нужен доступ на запись к вики команды для заметок по онбордингу", permissions=perms)
     assert r["reply_kind"] == "denied" and r["policy"]["code"] == "RBAC_LEVEL_NOT_ALLOWED"
+    assert r["policy"]["resource_id"] == "space_auto_backend_wiki" and r["policy"]["access_level"] == "write"
 
 
 def test_short_justification_feedback(ask):

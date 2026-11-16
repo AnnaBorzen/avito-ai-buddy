@@ -157,6 +157,10 @@ class PolicyDecision:
     code: str  # OK | RBAC_ACCESS_DENIED | RBAC_LEVEL_NOT_ALLOWED | RESOURCE_UNKNOWN | LEVEL_UNSUPPORTED
     message: str
     allowed_levels: tuple[str, ...] = ()
+    # Значения, к которым относится решение: backend строит по ним rbac_denial
+    # контракта api.yaml. Без них отказ политики нельзя выразить в ChatResponse.
+    resource_id: str | None = None
+    access_level: str | None = None
 
     def to_dict(self) -> dict:
         return {
@@ -164,6 +168,8 @@ class PolicyDecision:
             "code": self.code,
             "message": self.message,
             "allowed_levels": list(self.allowed_levels),
+            "resource_id": self.resource_id,
+            "access_level": self.access_level,
         }
 
 
@@ -177,22 +183,26 @@ def level_ru(level: str) -> str:
 def check(user: UserContext, perms: Permissions, resource_id: str, level: str | None) -> PolicyDecision:
     resource = CATALOG.get(resource_id)
     if resource is None:
-        return PolicyDecision(False, "RESOURCE_UNKNOWN", "Такого ресурса нет в каталоге.")
+        return PolicyDecision(
+            False, "RESOURCE_UNKNOWN", "Такого ресурса нет в каталоге.",
+            resource_id=resource_id, access_level=level,
+        )
     allowed = perms.levels(resource_id)
     if not allowed:
         return PolicyDecision(
             False,
             "RBAC_ACCESS_DENIED",
             f"Роли «{user.role}» недоступен запрос к ресурсу «{resource.title}».",
+            resource_id=resource_id, access_level=level,
         )
     if level is None:
-        return PolicyDecision(True, "OK", "", allowed)
+        return PolicyDecision(True, "OK", "", allowed, resource_id=resource_id)
     if level not in TOOL_LEVELS:
         return PolicyDecision(
             False,
             "LEVEL_UNSUPPORTED",
             f"Уровень «{level}» нельзя запросить через помощника: доступны только read и write.",
-            allowed,
+            allowed, resource_id=resource_id, access_level=level,
         )
     if level not in allowed:
         return PolicyDecision(
@@ -201,6 +211,6 @@ def check(user: UserContext, perms: Permissions, resource_id: str, level: str | 
             f"Для ресурса «{resource.title}» вам доступен только уровень "
             + ", ".join(level_ru(lv) for lv in allowed)
             + f"; {level_ru(level)} запросить нельзя.",
-            allowed,
+            allowed, resource_id=resource_id, access_level=level,
         )
-    return PolicyDecision(True, "OK", "", allowed)
+    return PolicyDecision(True, "OK", "", allowed, resource_id=resource_id, access_level=level)

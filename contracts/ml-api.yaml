@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Avito AI Buddy — ML service API
-  version: 1.0.0
+  version: 1.1.0
   description: |
     Внутренний API ML-сервиса (ml/). Вызывается ТОЛЬКО backend'ом, не браузером.
 
@@ -344,6 +344,15 @@ components:
                 code: { type: string, enum: [OK, RBAC_ACCESS_DENIED, RBAC_LEVEL_NOT_ALLOWED, LEVEL_UNSUPPORTED, RESOURCE_UNKNOWN] }
                 message: { type: string }
                 allowed_levels: { type: array, items: { type: string } }
+                resource_id:
+                  type: string
+                  description: |
+                    Ресурс, к которому относится решение. Заполняется запрошенным
+                    значением, даже если политика его запретила: backend строит по
+                    нему `rbac_denial` в `contracts/api.yaml`.
+                access_level:
+                  type: [string, "null"]
+                  description: Уровень, к которому относится решение (если он был известен).
         handoff_suggested: { type: boolean }
         handoff_target: { type: [string, "null"] }
         guard:

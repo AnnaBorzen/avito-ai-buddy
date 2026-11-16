@@ -10,7 +10,7 @@ COMPOSE := docker compose
 # --- Help ---
 help:
 	@echo "Available commands:"
-	@echo "  make up               - Start all services"
+	@echo "  make up               - Apply migrations and start all services"
 	@echo "  make down             - Stop all services"
 	@echo "  make build            - Build containers"
 	@echo "  make restart          - Restart services"
@@ -34,7 +34,8 @@ help:
 	@echo "  make db-migrate-version - Show current database migration version"
 
 # --- Docker ---
-up:
+# The API never migrates on startup: bring the schema to head before serving.
+up: db-migrate-up
 	$(COMPOSE) up -d --build
 
 down:

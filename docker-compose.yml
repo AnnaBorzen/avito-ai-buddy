@@ -164,14 +164,13 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      # The demo API reads the shared knowledge base, so the build context is
+      # the repository root and rag_docs/ is copied next to frontend/.
+      context: .
+      dockerfile: frontend/Dockerfile
 
     container_name: buddy-frontend
     restart: unless-stopped
-
-    environment:
-      VITE_API_PROXY_TARGET: http://backend:8080
 
     ports:
       - "${FRONTEND_PORT:-5173}:5173"

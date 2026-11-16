@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/AnnaBorzen/avito-ai-buddy/backend/internal/domain"
+	"github.com/AnnaBorzen/avito-ai-buddy/backend/internal/integration/ml"
 )
 
 var (
@@ -39,7 +40,27 @@ func (e *UpstreamError) Error() string {
 
 func (e *UpstreamError) Unwrap() error { return e.Kind }
 
-// RbacDenial builds the normal conversational denial from a domain decision.
+// rbacDenialFromPolicy maps the ML service's advisory policy decision to the
+// contract's denial shape. Only role-based refusals become rbac_denial; an
+// unknown resource or unsupported level stays an ordinary clarification turn.
+func rbacDenialFromPolicy(policy ml.Policy) *RbacDenial {
+	switch policy.Code {
+	case "RBAC_ACCESS_DENIED", "RBAC_LEVEL_NOT_ALLOWED":
+	default:
+		return nil
+	}
+	if policy.ResourceID == "" || policy.AccessLevel == "" {
+		return nil
+	}
+	return &RbacDenial{
+		ErrorCode:   "RBAC_ACCESS_DENIED",
+		Message:     policy.Message,
+		ResourceID:  policy.ResourceID,
+		AccessLevel: policy.AccessLevel,
+	}
+}
+
+// RbacDenialFrom builds the normal conversational denial from a domain decision.
 func RbacDenialFrom(err *domain.AccessDeniedError) *RbacDenial {
 	return &RbacDenial{
 		ErrorCode: "RBAC_ACCESS_DENIED",

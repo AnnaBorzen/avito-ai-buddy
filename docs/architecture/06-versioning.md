@@ -51,6 +51,7 @@
 | Артефакт | Поле версии | Текущая |
 |---|---|---|
 | `contracts/api.yaml` | `info.version` | 1.0.0 |
+| `contracts/ml-api.yaml` | `info.version` | 1.1.0 |
 | `contracts/access-service.openapi.yaml` | `info.version` | 1.0.0 |
 | `contracts/mcp-tools.yaml` | `version` | 1.0.0 |
 | спецификация поведения | `Версия` в шапке | 1.0 |

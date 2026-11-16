@@ -42,13 +42,14 @@ MVP — один глубоко проработанный сценарий: **�
 
 ```bash
 cp .env.example .env      # при необходимости поменяйте порты и пароли
-make up                   # docker compose up -d --build
-make db-migrate-up        # схема operations/analytics из backend/migrations
+make up                   # миграции + docker compose up -d --build
 ```
 
-API не применяет миграции при старте: это отдельный шаг деплоя, чтобы
-несколько реплик backend не гонялись за одну схему. Подробности —
-[`backend/migrations/README.md`](backend/migrations/README.md).
+`make up` сначала применяет миграции одноразовым сервисом `migrate`, затем
+собирает и запускает стек. API не применяет миграции при старте: это отдельный
+шаг деплоя, чтобы несколько реплик backend не гонялись за одну схему. Для уже
+запущенного стека миграции можно применить отдельно: `make db-migrate-up`.
+Подробности — [`backend/migrations/README.md`](backend/migrations/README.md).
 
 | Сервис | URL |
 |---|---|
@@ -221,7 +222,8 @@ cd frontend && npm run test:coverage     # vitest + порог 81% строк + 
 | `ACCESS_SERVICE_PORT` | публикуемый порт compose для сервиса доступов | `8091` |
 
 Интеграционные тесты backend выполняются на отдельной временной базе и по
-умолчанию пропускаются. Для запуска:
+умолчанию пропускаются. В CI база поднимается сервисом job'а и
+`TEST_DATABASE_URL` задаётся явно. Для локального запуска:
 
 ```bash
 TEST_DATABASE_URL='postgres://buddy:buddy@localhost:55432/buddy?sslmode=disable' \

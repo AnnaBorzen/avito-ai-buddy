@@ -5,7 +5,7 @@
 
 ## 1. YAML и ссылки
 
-- [ ] `contracts/api.yaml`, `contracts/mcp-tools.yaml`,
+- [ ] `contracts/api.yaml`, `contracts/ml-api.yaml`, `contracts/mcp-tools.yaml`,
       `contracts/access-service.openapi.yaml` разбираются любым YAML 1.2-парсером.
 - [ ] Все `$ref: "#/..."` разрешаются внутри своего файла (проверка скриптом).
 - [ ] `info.version` поднят, если изменился контракт (см. `06-versioning.md`).
@@ -41,7 +41,7 @@
 | # | Расхождение | Где | Чем закрывается |
 |---|---|---|---|
 | 1 | Демо-макет пишет события с полями `event_name`, `time`, `version` вместо `event`, `occurred_at`, `scenario_version` | `frontend/server/service.mjs` | приведение к `docs/metrics.md` §3 |
-| 2 | Бизнес-эндпоинты обслуживает middleware Vite, а не Go backend | `frontend/server/http.mjs` | реализация `backend/internal` по контракту |
+| 2 | Демо-макет API (`frontend/server/*.mjs`) включён по умолчанию и повторяет контракт вручную; Go backend реализует тот же контракт, но frontend не проксирует на него запросы | `frontend/vite.config.ts`, `frontend/server/*.mjs` | сверка макета с `contracts/api.yaml`; для сквозной проверки backend — прокси `/api/v1` на `backend:8080` |
 
 Расхождения фиксируются здесь, а не раскидываются по PRD: это единый список
 технического долга прототипа.
